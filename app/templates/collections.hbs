@@ -1,0 +1,201 @@
+<div class="collections-page">
+  {{!-- Unified Header: Hero + Filters --}}
+  <div class="collections-header">
+    <div class="section-header">
+      <h1>Our Collections</h1>
+      <p>Hand-woven elegance for the modern woman.</p>
+    </div>
+
+    {{!-- Filter Bar --}}
+    <div class="collections-filter-bar">
+      <div class="filter-bar-scroll">
+        {{!-- Search Chip --}}
+        {{#if this.q}}
+          <div class="filter-chip filter-chip--search filter-chip--active">
+            <svg class="search-chip-icon" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span class="filter-chip-label">Search</span>
+            <span class="filter-chip-value">"{{this.q}}"</span>
+            <button type="button" class="chip-clear" {{on "click" this.clearSearch}} aria-label="Clear search">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          </div>
+        {{/if}}
+
+        {{!-- Category Filter --}}
+        <div class="filter-dropdown">
+          <button
+            type="button"
+            class="filter-chip {{if this.category "filter-chip--active"}} {{if this.isCategoryOpen "filter-chip--open"}}"
+            {{on "click" this.toggleCategoryDropdown}}
+            aria-expanded="{{if this.isCategoryOpen "true" "false"}}"
+          >
+            <span class="filter-chip-label">Category</span>
+            <span class="filter-chip-value">{{if this.category this.category "All"}}</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="filter-chip-chevron {{if this.isCategoryOpen "filter-chip-chevron--open"}}">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          {{#if this.isCategoryOpen}}
+            <div class="filter-panel filter-panel--category">
+              <div class="filter-panel-options">
+                <button
+                  type="button"
+                  class="filter-panel-option {{if (equal this.effectivePendingCategory "") "filter-panel-option--selected"}}"
+                  {{on "click" (fn this.selectPendingCategory "")}}
+                >
+                  <div class="filter-option-radio">
+                    {{#if (equal this.effectivePendingCategory "")}}
+                      <div class="filter-option-radio-dot"></div>
+                    {{/if}}
+                  </div>
+                  All Categories
+                </button>
+                {{#each this.currentStore.categories as |cat|}}
+                  <button
+                    type="button"
+                    class="filter-panel-option {{if (equal this.effectivePendingCategory cat.name) "filter-panel-option--selected"}}"
+                    {{on "click" (fn this.selectPendingCategory cat.name)}}
+                  >
+                    <div class="filter-option-radio">
+                      {{#if (equal this.effectivePendingCategory cat.name)}}
+                        <div class="filter-option-radio-dot"></div>
+                      {{/if}}
+                    </div>
+                    {{cat.name}}
+                  </button>
+                {{/each}}
+              </div>
+              <div class="filter-panel-footer">
+                <button type="button" class="apply-filter-btn" {{on "click" this.applyCategoryFilter}}>
+                  Apply Filter{{#if this.effectivePendingCategory}} ({{this.effectivePendingCategory}}){{/if}}
+                </button>
+              </div>
+            </div>
+          {{/if}}
+        </div>
+
+        {{!-- Tags Filter --}}
+        <div class="filter-dropdown">
+          <button
+            type="button"
+            class="filter-chip {{if this.tags "filter-chip--active"}} {{if this.isTagsOpen "filter-chip--open"}}"
+            {{on "click" this.toggleTagsDropdown}}
+            aria-expanded="{{if this.isTagsOpen "true" "false"}}"
+          >
+            <span class="filter-chip-label">Tags</span>
+            <span class="filter-chip-value">{{if this.tags this.compactTagsDisplay "All"}}</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="filter-chip-chevron {{if this.isTagsOpen "filter-chip-chevron--open"}}">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </button>
+
+          {{#if this.isTagsOpen}}
+            <div class="filter-panel filter-panel--tags">
+              {{#if this.tags}}
+                <div class="filter-panel-selected">
+                  {{#each this.parsedTags as |tag|}}
+                    <span class="filter-panel-tag">
+                      {{tag}}
+                      <button type="button" {{on "click" (fn this.removeTagChip tag)}} aria-label="Remove {{tag}}">&times;</button>
+                    </span>
+                  {{/each}}
+                </div>
+              {{/if}}
+              <div class="filter-panel-options">
+                {{#each this.currentStore.tags as |tag|}}
+                  <button
+                    type="button"
+                    class="filter-panel-option filter-panel-option--checkbox {{if (includes tag this.pendingTags) "filter-panel-option--selected"}}"
+                    {{on "click" (fn this.togglePendingTag tag)}}
+                  >
+                    <div class="filter-option-checkbox">
+                      {{#if (includes tag this.pendingTags)}}
+                        <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                      {{/if}}
+                    </div>
+                    {{tag}}
+                  </button>
+                {{/each}}
+              </div>
+              <div class="filter-panel-footer">
+                <button type="button" class="apply-filter-btn" {{on "click" this.applyTagsFilter}}>
+                  Apply Filter{{#if this.pendingTags.length}} ({{this.pendingTags.length}}){{/if}}
+                </button>
+              </div>
+            </div>
+          {{/if}}
+        </div>
+
+        {{#if this.hasActiveFilters}}
+          <button type="button" class="clear-all-btn" {{on "click" this.clearAllFilters}}>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+            Clear
+          </button>
+        {{/if}}
+        {{#if this.hasActiveFilters}}
+          <div class="results-count">{{this.filteredProducts.length}} results</div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  {{!-- Dropdown Overlay --}}
+  {{#if (or this.isCategoryOpen this.isTagsOpen)}}
+    {{!-- template-lint-disable no-invalid-interactive --}}
+    <div class="filter-dropdown-overlay" {{on "click" this.closeAllDropdowns}}></div>
+  {{/if}}
+
+  {{!-- Product Grid --}}
+  <div class="collections-grid">
+    {{#each this.paginatedProducts as |saree|}}
+      <div class="card-3d-wrapper">
+        <ProductCard @product={{saree}} />
+      </div>
+    {{else}}
+      <div class="no-results">
+        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" class="no-results-icon">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          <line x1="8" y1="11" x2="14" y2="11"></line>
+        </svg>
+        <p>No products match your filters.</p>
+        <button type="button" class="clear-filters-btn" {{on "click" this.clearAllFilters}}>
+          Clear All Filters
+        </button>
+      </div>
+    {{/each}}
+  </div>
+
+  {{!-- Pagination --}}
+  {{#if (gt this.totalPages 1)}}
+    <nav class="pagination-container">
+      <button type="button" class="page-arrow" disabled={{equal this.currentPage 1}} {{on "click" (fn this.changePage -1)}}>
+        &larr; Prev
+      </button>
+
+      <div class="page-numbers">
+        {{#each this.pages as |page|}}
+          <button type="button" class="page-num {{if (equal this.currentPage page) "active"}}" {{on "click" (fn this.setPage page)}}>
+            {{page}}
+          </button>
+        {{/each}}
+      </div>
+
+      <button type="button" class="page-arrow" disabled={{equal this.currentPage this.totalPages}} {{on "click" (fn this.changePage 1)}}>
+        Next &rarr;
+      </button>
+    </nav>
+  {{/if}}
+</div>

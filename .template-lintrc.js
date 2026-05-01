@@ -2,4 +2,9 @@
 
 module.exports = {
   extends: 'recommended',
+  rules: {
+    'no-invalid-interactive': {
+      additionalInteractiveTags: ['div'],
+    },
+  },
 };

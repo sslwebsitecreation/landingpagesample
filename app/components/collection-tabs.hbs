@@ -1,0 +1,45 @@
+<section class="collection-section" {{scroll-reveal delay=150}}>
+  <div class="section-header-wrapper">
+    <span class="section-eyebrow">Trending Now</span>
+    <h2 class="section-title">Explore Our <span>Collection</span></h2>
+    <p class="section-subtitle">Discover the most loved sarees, handpicked for quality and style.</p>
+  </div>
+
+  <div class="tabs-container">
+    {{!-- Sliding Tab Header --}}
+    <div class="tab-switcher">
+      <div class="tab-glide-pill is-{{this.activeTab}}"></div>
+
+      <button
+        type="button"
+        class="tab-btn {{if (equal this.activeTab 'trending') 'is-active'}}"
+        {{on "click" (fn this.setTab 'trending')}}
+      >
+        Trending Sarees
+      </button>
+
+      <button
+        type="button"
+        class="tab-btn {{if (equal this.activeTab 'special') 'is-active'}}"
+        {{on "click" (fn this.setTab 'special')}}
+      >
+        Store Specials
+      </button>
+    </div>
+  </div>
+
+  {{!-- Product Grid with Animation Key --}}
+  <div class="collection-grid-wrapper" key={{this.activeTab}}>
+    <div class="product-grid-container">
+      {{#each this.activeCollection as |product|}}
+        <ProductCard @product={{product}} />
+      {{/each}}
+    </div>
+  </div>
+
+  <div class="collection-footer">
+    <LinkTo @route="collections" class="view-all-link">
+      View Entire Collection <span>→</span>
+    </LinkTo>
+  </div>
+</section>

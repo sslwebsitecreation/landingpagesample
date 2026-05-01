@@ -1,0 +1,59 @@
+{{!-- template-lint-disable no-inline-styles style-concatenation --}}
+<section class="shop-by-category" {{scroll-reveal delay=100}}>
+  <div class="category-container">
+    <div class="category-header">
+      <div class="header-left">
+        <span class="section-eyebrow">Curated Collections</span>
+        <h2 class="section-title">Shop by <span>Category</span></h2>
+        <p class="section-subtitle">Explore our handpicked categories, each showcasing the beauty of traditional weaving passed down through generations.</p>
+        <div class="title-underline"></div>
+      </div>
+      <button type="button" class="view-all-link" {{on "click" @onViewAll}}>
+        View All Categories
+        <span class="arrow">→</span>
+      </button>
+    </div>
+
+    <div class="carousel-wrapper">
+      <div class="carousel-track">
+        {{#each this.currentStore.categories as |cat index|}}
+          <LinkTo
+            @route="collections"
+            @query={{hash category=cat.name page=1}}
+            class="category-card"
+            style="--item-index: {{index}}"
+          >
+            <div class="card-orb">
+              <div class="orb-inner">
+                <img src={{cat.image}} alt={{cat.name}} loading="lazy">
+              </div>
+              <div class="orb-shadow"></div>
+            </div>
+            <span class="category-name">{{cat.name}}</span>
+            <span class="category-count">{{category-count cat this.currentStore.products}} pieces</span>
+          </LinkTo>
+        {{/each}}
+        {{!-- Duplicate for seamless loop --}}
+        {{#each this.currentStore.categories as |cat index|}}
+          <LinkTo
+            @route="collections"
+            @query={{hash category=cat.name page=1}}
+            class="category-card"
+            style="--item-index: {{index}}"
+            aria-hidden="true"
+            tabindex="-1"
+          >
+            <div class="card-orb">
+              <div class="orb-inner">
+                <img src={{cat.image}} alt={{cat.name}} loading="lazy">
+              </div>
+              <div class="orb-shadow"></div>
+            </div>
+            <span class="category-name">{{cat.name}}</span>
+            <span class="category-count">{{category-count cat this.currentStore.products}} pieces</span>
+          </LinkTo>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</section>

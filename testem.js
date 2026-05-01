@@ -20,4 +20,9 @@ module.exports = {
       ].filter(Boolean),
     },
   },
+  rules: {
+    'no-invalid-interactive': {
+      allowList: ['div'],
+    },
+  },
 };

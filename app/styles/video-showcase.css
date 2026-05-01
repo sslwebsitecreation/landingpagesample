@@ -1,0 +1,156 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap');
+
+.video-studio-section {
+  background: #F9F7F2;
+  padding: 80px 0;
+  perspective: 2500px;
+  overflow: hidden;
+  font-family: 'Inter', sans-serif;
+}
+
+.studio-container { max-width: 1400px; margin: 0 auto; }
+
+/* --- HEADER --- */
+.studio-intro {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  margin-bottom: 40px; padding: 0 20px;
+}
+
+.section-eyebrow {
+  font-size: 0.65rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #FF6600;
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.studio-title {
+  font-size: clamp(2rem, 5vw, 3.2rem); color: #1A1A1A;
+  font-weight: 800; letter-spacing: -1.5px; line-height: 1; margin-bottom: 10px;
+}
+.studio-title span { font-family: 'Playfair Display', serif; font-style: italic; color: #FF6600; }
+
+.studio-subtitle {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  color: #777; font-size: 1.2rem; margin: 0 0 8px 0;
+}
+
+.studio-description {
+  font-size: 0.95rem;
+  color: #888;
+  max-width: 480px;
+  margin: 0 0 24px;
+  line-height: 1.7;
+}
+
+/* --- YOUTUBE BUTTON --- */
+.youtube-channel-btn {
+  display: inline-flex; align-items: center; gap: 15px; background: #fff;
+  padding: 12px 30px; border-radius: 18px; text-decoration: none;
+  border: 1px solid #EEE; transition: 0.3s ease;
+}
+.youtube-channel-btn:hover { border-color: #FF0000; transform: translateY(-3px); box-shadow: 0 8px 20px rgba(255, 0, 0, 0.1); }
+.yt-icon { color: #FF0000; width: 30px; height: 30px; display: flex; align-items: center; }
+.btn-text small { font-size: 0.6rem; letter-spacing: 2px; color: #999; font-weight: 800; display: block; }
+.btn-text span { font-size: 1.1rem; font-weight: 800; color: #1a1a1a; }
+
+/* --- VIDEO REEL SELECTOR (MOBILE FIX) --- */
+.video-selector-reel {
+  display: flex; gap: 20px; overflow-x: auto;
+  padding: 16px 32px;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+}
+.video-selector-reel::-webkit-scrollbar { display: none; }
+
+.video-card-mini {
+  flex: 0 0 240px; background: none; border: none; cursor: pointer; text-align: left;
+  scroll-snap-align: center;
+}
+
+.mini-thumb {
+  position: relative; border-radius: 20px; overflow: hidden; aspect-ratio: 16/9;
+  background: #FFF; border: 2px solid transparent; transition: 0.4s;
+}
+.mini-thumb img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); opacity: 0.6; transition: 0.6s; }
+
+.video-card-mini.is-active .mini-thumb { border-color: #FF6600; transform: translateY(-10px); box-shadow: 0 15px 30px rgba(255, 102, 0, 0.15); }
+.video-card-mini.is-active img, .video-card-mini:hover img { filter: grayscale(0%); opacity: 1; }
+
+.v-name { display: block; color: #1a1a1a; font-weight: 700; font-size: 0.95rem; margin-top: 12px; }
+
+/* REFINED DATE FONT */
+.v-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: #777;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* --- 3D STAGE --- */
+.stage-3d-perspective {
+  max-width: 1350px; margin: 30px auto; padding: 0 20px;
+  opacity: 0; transform: perspective(2000px) rotateX(-15deg) scale(0.9) translateZ(-300px);
+  transition: opacity 0.5s ease, transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.stage-3d-perspective.is-active { opacity: 1; transform: perspective(2000px) rotateX(0deg) scale(1) translateZ(0); }
+.stage-container { background: #FFF; border-radius: 24px; padding: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.05); position: relative; }
+
+.close-studio-btn {
+  position: absolute; top: 20px; right: 25px; background: #f0f0f0; color: #333;
+  border: none; padding: 6px 15px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.7rem;
+  z-index: 10; transition: all 0.2s ease;
+}
+.close-studio-btn:hover { background: #e0e0e0; }
+
+.stage-layout { display: grid; grid-template-columns: 1.8fr 1fr; gap: 40px; }
+.video-frame-3d { position: relative; padding-bottom: 56.25%; height: 0; border-radius: 24px; overflow: hidden; box-shadow: 0 30px 60px rgba(0,0,0,0.12); }
+.video-frame-3d iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* PLAYER INFO WITH DATE */
+.player-info { margin-top: 25px; }
+.info-meta { display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+.player-info h3 { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: #1a1a1a; margin: 0; font-weight: 700; }
+.live-tag { color: #FF6600; font-weight: 800; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; }
+.player-date { font-family: 'Cormorant Garamond', serif; font-style: italic; color: #888; font-size: 1.3rem; }
+
+/* --- SIDEBAR --- */
+.sidebar-header { margin-bottom: 25px; }
+.sidebar-header .eyebrow { font-size: 0.65rem; letter-spacing: 2px; text-transform: uppercase; color: #BBB; font-weight: 800; display: block; }
+.sidebar-header .title { font-size: 1.6rem; font-weight: 800; color: #1A1A1A; margin: 0; }
+.sidebar-header .title span { font-family: 'Playfair Display', serif; font-style: italic; color: #FF6600; }
+
+.sidebar-scroll { height: 480px; overflow-y: auto; padding-right: 10px; }
+.sidebar-scroll::-webkit-scrollbar { width: 3px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: #FF6600; }
+
+.saree-horizontal-card {
+  display: flex; background: #FFFFFF; border-radius: 12px; overflow: hidden; margin-bottom: 15px;
+  height: 130px; border: 1px solid #F2F0E9; transition: 0.3s ease;
+  opacity: 0; transform: translateX(20px);
+}
+.is-active .saree-horizontal-card { animation: slideIn 0.5s ease forwards; }
+
+@keyframes slideIn { to { opacity: 1; transform: translateX(0); } }
+
+.card-thumb { position: relative; flex: 0 0 90px; overflow: hidden; }
+.card-thumb img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+.card-thumb:hover img { transform: scale(1.1); }
+.card-info { flex: 1; padding: 12px 15px; display: flex; flex-direction: column; justify-content: space-between; }
+.product-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: #1A1A1A; margin: 2px 0; font-weight: 700; line-height: 1.2; }
+.info-bottom { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #F9F7F2; padding-top: 8px; }
+.product-price { font-weight: 800; font-size: 1rem; color: #1A1A1A; }
+.view-link { background: none; border: none; color: #999; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; cursor: pointer; transition: color 0.2s ease; }
+.view-link:hover { color: #FF6600; }
+
+/* MOBILE RESPONSIVENESS */
+@media (max-width: 992px) {
+  .video-studio-section { padding: 50px 0; }
+  .stage-layout { grid-template-columns: 1fr; gap: 30px; }
+  .video-selector-reel { padding: 15px 20px; }
+  .studio-title { font-size: 2.2rem; }
+  .stage-container { padding: 25px; border-radius: 25px; }
+  .studio-description { font-size: 0.9rem; }
+}
