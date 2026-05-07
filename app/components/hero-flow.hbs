@@ -1,19 +1,4 @@
-<section class="hero-flow-component" {{setup-3d this.setupScene}}>
-  <div class="hero-bg-layer"></div>
-  <div class="hero-depth-overlay"></div>
-
-  <div class="hero-content">
-    <span class="hero-eyebrow">Riya Sri Silks</span>
-    <h1 class="hero-title">Experience <span>Silk</span></h1>
-    <p class="hero-subtitle">The Future of Tradition</p>
-    <p class="hero-description">Handmade sarees with classic weaving and stylish modern designs.</p>
-    <div class="hero-cta">
-      <LinkTo @route="collections" class="btn-primary">View Collection</LinkTo>
-    </div>
-  </div>
-
-  <div class="hero-scroll-indicator">
-    <span class="scroll-text">Scroll to explore</span>
-    <div class="scroll-arrow"></div>
-  </div>
+<section class="hero-flow-component" aria-label="Elegant silk saree collection" {{did-insert this.setup}}>
+  <div class="hero-banner-image"></div>
+  <div class="hero-banner-glow"></div>
 </section>

@@ -1,7 +1,6 @@
 <section class="video-studio-section" {{scroll-reveal delay=100}}>
   <div class="studio-container">
 
-    {{!-- CENTERED HEADER --}}
     <div class="studio-intro">
       <span class="section-eyebrow">Behind the Loom</span>
       <h2 class="studio-title">Riya Sri Silks <span>Live Studio</span></h2>
@@ -22,7 +21,6 @@
     </div>
 
     {{#if this.currentStore.youtubeVideos.length}}
-      {{!-- VIDEO REEL (Adjusted for Mobile Visibility) --}}
       <div class="video-selector-reel">
         {{#each this.currentStore.youtubeVideos as |video|}}
           <button type="button"
@@ -40,17 +38,15 @@
         {{/each}}
       </div>
 
-      {{!-- 3D STAGE --}}
       {{#if this.selectedVideo}}
         <div class="stage-3d-perspective {{if this.isVisible 'is-active'}}">
           <div class="stage-container">
             <button type="button" class="close-studio-btn" {{on "click" this.closeStudio}}>✕ Close</button>
             <div class="stage-layout">
 
-              {{!-- LEFT: MAIN PLAYER WITH DATE --}}
               <div class="main-player">
                 <div class="video-frame-3d">
-                  <iframe src="https://www.youtube.com/embed/{{this.selectedVideo.youtubeId}}?autoplay=1"
+                  <iframe src="https://www.youtube.com/embed/{{this.selectedVideo.youtubeId}}?autoplay=0&rel=0&showinfo=0"
                     frameborder="0" allowfullscreen title="riya sri silks video"></iframe>
                 </div>
                 <div class="player-info">
@@ -62,7 +58,6 @@
                 </div>
               </div>
 
-              {{!-- RIGHT: HORIZONTAL PRODUCT SIDEBAR --}}
               <div class="product-sidebar">
                 <div class="sidebar-header">
                   <span class="eyebrow">The Collection</span>
@@ -96,7 +91,6 @@
         </div>
       {{/if}}
     {{else}}
-      {{!-- EMPTY STATE --}}
       <div class="empty-studio-placeholder">
         <span class="silk-emoji">✨</span>
         <h3>Studio Premiere Coming Soon</h3>
