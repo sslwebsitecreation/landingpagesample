@@ -1,5 +1,6 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
+import { inject as service } from '@ember/service';
 
 const categories = [
   {
@@ -289,49 +290,71 @@ const storeInfo = {
 const handpickedSareesIds = [1, 5, 10, 15, 20];
 
 export default class CurrentStoreService extends Service {
+  @service cache;
+
   @tracked products = [];
   @tracked categories = [];
+  @tracked tags = [];
   @tracked featuredIds = [];
   @tracked cartItems = [];
+  @tracked tubeVideos = [];
   @tracked error = null;
 
-  // Mocking multiple videos. In production, this comes from your API.
-  @tracked tubeVideos = [];
-
-  /**
-   * Fetches the full store data in one call
-   */
-  //   async fetchStoreData() {
-  //     this.isLoading = true;
-  //     try {
-  //       const response = await fetch('YOUR_API_ENDPOINT/store-data');
-  //       const data = await response.json();
-
-  //       // Based on your API structure: { products, categories, handpickedSareesIds, tags }
-  //       this.products = data.products || [];
-  //       this.categories = data.categories || [];
-  //       this.featuredIds = data.handpickedSareesIds || [];
-
-  //     } catch (err) {
-  //       this.error = "Failed to load boutique data";
-  //       console.error(err);
-  //     } finally {
-  //       this.isLoading = false;
-  //     }
-  //   }
+  _fetching = null;
 
   async fetchStoreData() {
-    // Simulate Server Latency
-    return new Promise((resolve) => {
+    if (this.cache.isCacheValid()) {
+      try {
+        const cached = await this.cache.loadCatalog();
+        if (cached.products.length) {
+          this._hydrate(cached);
+          this._backgroundRefresh();
+          return;
+        }
+      } catch {
+        await this.cache.clearCatalog();
+      }
+    } else {
+      this.cache.invalidateCache();
+    }
+    return this._fullFetch();
+  }
+
+  _hydrate(data) {
+    this.categories = data.categories ? [...data.categories] : [];
+    this.tags = data.tags ? [...data.tags] : [];
+    this.tubeVideos = data.tubeVideos ? [...data.tubeVideos] : [];
+    this.products = data.products ? [...data.products] : [];
+    this.featuredIds = data.featuredIds ? [...data.featuredIds] : [];
+  }
+
+  async _fullFetch() {
+    if (this._fetching) return this._fetching;
+    this._fetching = new Promise((resolve) => {
       setTimeout(() => {
-        this.categories = categories;
-        this.tags = tags;
-        this.tubeVideos = youtubeVideos;
-        this.products = products;
-        this.featuredIds = handpickedSareesIds;
+        const data = {
+          categories,
+          tags,
+          tubeVideos: youtubeVideos,
+          products,
+          featuredIds: handpickedSareesIds,
+        };
+        this._hydrate(data);
+        this.cache.saveCatalog(data);
+        this._fetching = null;
         resolve();
       }, 1500);
     });
+    return this._fetching;
+  }
+
+  async _backgroundRefresh() {
+    if (!navigator.onLine) return;
+    try {
+      await this._fullFetch();
+    } catch {
+      // cached data is already showing — fail silently
+    }
   }
 
   get youtubeVideos() {
