@@ -153,8 +153,7 @@
 
   {{!-- Dropdown Overlay --}}
   {{#if (or this.isCategoryOpen this.isTagsOpen)}}
-    {{!-- template-lint-disable no-invalid-interactive --}}
-    <div class="filter-dropdown-overlay" {{on "click" this.closeAllDropdowns}}></div>
+    <div class="filter-dropdown-overlay" {{on "click" this.closeAllDropdowns}} {{act-as-a-button}}></div>
   {{/if}}
 
   {{!-- Product Grid --}}

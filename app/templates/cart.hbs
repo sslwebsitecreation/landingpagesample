@@ -28,7 +28,7 @@
           <div class="cart-item-card" style="--delay: {{index}}">
             <LinkTo @route="product" @model={{item.id}} class="item-image-link">
               <div class="item-image-wrapper">
-                <img src={{item.selectedVariant.image}} alt={{item.name}} class="product-img">
+                <img src={{item.selectedVariant.image}} alt={{item.name}} class="product-img" loading="lazy" width="120" height="160">
               </div>
             </LinkTo>
             <div class="item-details">

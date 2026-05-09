@@ -21,9 +21,7 @@
 
 {{!-- Category Modal (rendered at root level to avoid stacking context issues) --}}
 {{#if this.isCategoryModalOpen}}
-  {{!-- template-lint-disable no-invalid-interactive --}}
-  <div class="category-modal-backdrop" {{on "click" this.closeCategoryModal}}>
-    {{!-- template-lint-disable no-invalid-interactive --}}
+  <div class="category-modal-backdrop" {{on "click" this.closeCategoryModal}} {{act-as-a-button}}>
     <div class="category-modal" {{on "click" this.stopPropagation}}>
       <div class="modal-header">
         <h3>All Collections</h3>
@@ -44,7 +42,7 @@
             {{on "click" this.closeCategoryModal}}
           >
             <div class="modal-card-img">
-              <img src={{cat.image}} alt={{cat.name}} loading="lazy">
+              <img src={{cat.image}} alt={{cat.name}} loading="lazy" width="140" height="140">
             </div>
             <div class="modal-card-info">
               <span class="modal-card-name">{{cat.name}}</span>

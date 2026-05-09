@@ -15,7 +15,7 @@
         {{/if}}
       </div>
 
-      <img src={{this.activeVariant.image}} alt={{@product.name}} class="main-img">
+      <img src={{this.activeVariant.image}} alt={{@product.name}} class="main-img" loading="lazy" width="200" height="267">
 
       <button type="button" class="quick-add-btn" {{on "click" (fn this.addToCart @product)}} aria-label="Add to cart">
         <span>+</span>

@@ -10,16 +10,14 @@
       {{#each this.testimonials as |testimonial index|}}
         <div
           class="testimonial-card {{if (equal index this.activeIndex) 'is-active' ''}}"
-          role="button"
-          tabindex="0"
           {{on "click" (fn this.setActive index)}}
-          {{on "keyup" (fn this.handleKeydown index)}}
+          {{act-as-a-button}}
         >
           <div class="testimonial-quote-mark">"</div>
           <p class="testimonial-text">{{testimonial.text}}</p>
           <div class="testimonial-footer">
             <div class="testimonial-author">
-              <img class="testimonial-avatar" src="{{testimonial.avatar}}" alt="{{testimonial.name}}" loading="lazy" />
+              <img class="testimonial-avatar" src="{{testimonial.avatar}}" alt="{{testimonial.name}}" loading="lazy" width="48" height="48" />
               <div class="author-info">
                 <span class="author-name">{{testimonial.name}}</span>
                 <span class="author-location">{{testimonial.location}}</span>

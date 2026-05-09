@@ -29,7 +29,7 @@
             class="video-card-mini {{if (equal video.id this.selectedVideo.id) 'is-active'}}"
             {{on "click" (fn this.selectVideo video)}}>
             <div class="mini-thumb">
-              <img src={{video.thumb}} alt={{video.title}}>
+              <img src={{video.thumb}} alt={{video.title}} loading="lazy" width="140" height="79">
               <div class="play-overlay"><span>▶</span></div>
             </div>
             <div class="mini-meta">
@@ -70,7 +70,7 @@
                   {{#each this.selectedVideo.featuredSarees as |product|}}
                     <LinkTo @route="product" @model={{product.id}} class="saree-horizontal-card">
                       <div class="card-thumb">
-                        <img src={{product.variants.[0].image}} alt={{product.name}}>
+                        <img src={{product.variants.[0].image}} alt={{product.name}} loading="lazy" width="72" height="96">
                         <button type="button" class="mini-add-btn" {{on "click" (fn this.addToCart product)}} aria-label="Add to tray">+</button>
                       </div>
 

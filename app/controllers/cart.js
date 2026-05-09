@@ -18,7 +18,9 @@ export default class CartController extends Controller {
   @action
   removeItem(index) {
     const removed = this.currentStore.cartItems[index];
-    this.currentStore.cartItems = this.currentStore.cartItems.filter((_, i) => i !== index);
+    this.currentStore.cartItems = this.currentStore.cartItems.filter(
+      (_, i) => i !== index
+    );
     this.toast.show(`${removed.name} removed`, 'info');
   }
 
@@ -49,6 +51,12 @@ export default class CartController extends Controller {
 
   @action
   sendToWhatsApp() {
+    if (this._waPending) return;
+    this._waPending = true;
+    setTimeout(() => {
+      this._waPending = false;
+    }, 1000);
+
     const items = this.currentStore.cartItems;
     if (items.length === 0) return;
 

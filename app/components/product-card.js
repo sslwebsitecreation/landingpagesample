@@ -9,7 +9,8 @@ export default class ProductCardComponent extends Component {
   @tracked activeVariant = this.args.product.variants?.[0] || {};
 
   get stockClass() {
-    return this.args.product.stockStatus?.replace('_', '-') || 'in-stock';
+    const status = this.args.product.status || 'in_stock';
+    return status.replace('_', '-');
   }
 
   @action

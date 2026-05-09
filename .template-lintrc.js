@@ -6,5 +6,7 @@ module.exports = {
     'no-invalid-interactive': {
       additionalInteractiveTags: ['div'],
     },
+    'no-inline-styles': false,
+    'style-concatenation': false,
   },
 };

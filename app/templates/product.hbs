@@ -5,9 +5,8 @@
     
     {{!-- Left Side: Floating Asset --}}
     <div class="visual-stage">
-      {{!-- template-lint-disable no-invalid-interactive --}}
-      <div class="floating-3d-card" {{on "click" this.openModal}}>
-        <img src={{this.activeVariant.image}} alt={{this.product.name}} class="product-asset">
+      <div class="floating-3d-card" {{on "click" this.openModal}} {{act-as-a-button}}>
+        <img src={{this.activeVariant.image}} alt={{this.product.name}} class="product-asset" width="380" height="550">
         <div class="glass-reflection"></div>
         <div class="view-indicator">TAP TO ENLARGE</div>
       </div>
@@ -103,9 +102,8 @@
 
 {{!-- Expand Modal --}}
 {{#if this.isModalOpen}}
-  {{!-- template-lint-disable no-invalid-interactive --}}
-  <div class="modal-blur-overlay" {{on "click" this.closeModal}}>
+  <div class="modal-blur-overlay" {{on "click" this.closeModal}} {{act-as-a-button}}>
     <button type="button" class="modal-exit" {{on "click" this.closeModal}}>✕</button>
-    <img src={{this.activeVariant.image}} class="modal-highres-img" alt="Variant">
+    <img src={{this.activeVariant.image}} class="modal-highres-img" alt="Variant" loading="lazy" width="800" height="1000">
   </div>
 {{/if}}

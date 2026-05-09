@@ -73,7 +73,8 @@ export default class CacheService extends Service {
         const tx = db.transaction(STORE_NAME, 'readonly');
         const store = tx.objectStore(STORE_NAME);
         const request = store.get(key);
-        request.onsuccess = () => resolve(request.result !== undefined ? request.result : null);
+        request.onsuccess = () =>
+          resolve(request.result !== undefined ? request.result : null);
         request.onerror = () => reject(request.error);
       });
     } catch {
@@ -147,13 +148,14 @@ export default class CacheService extends Service {
   }
 
   async loadCatalog() {
-    const [products, categories, tags, tubeVideos, featuredIds] = await Promise.all([
-      this.getItem('products'),
-      this.getItem('categories'),
-      this.getItem('tags'),
-      this.getItem('tubeVideos'),
-      this.getItem('featuredIds'),
-    ]);
+    const [products, categories, tags, tubeVideos, featuredIds] =
+      await Promise.all([
+        this.getItem('products'),
+        this.getItem('categories'),
+        this.getItem('tags'),
+        this.getItem('tubeVideos'),
+        this.getItem('featuredIds'),
+      ]);
     return {
       products: products || [],
       categories: categories || [],

@@ -81,7 +81,7 @@ const categories = [
   {
     category_id: '16',
     name: 'Bandhani',
-    image: 'https://images.unsplash.com/photo-158877687 eight.webp',
+    image: 'https://images.unsplash.com/photo-1588776874580-905a1e8f8e3c?w=400',
   },
   {
     category_id: '17',
@@ -126,15 +126,15 @@ const tags = [
 const youtubeVideos = [
   {
     id: 1,
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: '_L4G-vJl3zU',
     title: 'Wedding Collection 2026',
     date: 'Apr 15, 2026',
     thumb: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400',
-    featured_saree_ids: [1, 2, 3, 4, 5],
+    featured_saree_ids: [1, 2, 3, 4, 5, 6, 7, 8],
   },
   {
     id: 2,
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: 'op-3uwNubw0',
     title: 'Festival Special Collection',
     date: 'Apr 12, 2026',
     thumb: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400',
@@ -142,7 +142,7 @@ const youtubeVideos = [
   },
   {
     id: 3,
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: '2EZJKnH-QJo',
     title: 'Summer Collection 2026',
     date: 'Apr 10, 2026',
     thumb: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400',
@@ -150,7 +150,7 @@ const youtubeVideos = [
   },
   {
     id: 4,
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: 'dro9n7Yd1t0',
     title: 'Bridal Special Collection',
     date: 'Apr 8, 2026',
     thumb: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400',
@@ -158,8 +158,16 @@ const youtubeVideos = [
   },
   {
     id: 5,
-    youtubeId: 'dQw4w9WgXcQ',
+    youtubeId: 'LjhLHlur-d8',
     title: 'Office Wear Collection',
+    date: 'Oct 12, 2025',
+    thumb: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400',
+    featured_saree_ids: [21, 22, 23, 24, 25],
+  },
+  {
+    id: 6,
+    youtubeId: 'ayVWVHGGuDg',
+    title: 'Wedding Collections',
     date: 'Oct 12, 2025',
     thumb: 'https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?w=400',
     featured_saree_ids: [21, 22, 23, 24, 25],
@@ -284,7 +292,8 @@ const storeInfo = {
   instagram: 'https://www.instagram.com/riyasri_silks/',
   youtube: 'https://www.youtube.com/@riyasrisilk',
   whatsappNumber: '919876543210',
-  whatsappMessage: 'Hello Riya Sri Silks, shown your sarees in your website store, I am interested in purchasing. Please share more details.',
+  whatsappMessage:
+    'Hello Riya Sri Silks, shown your sarees in your website store, I am interested in purchasing. Please share more details.',
 };
 
 const handpickedSareesIds = [1, 5, 10, 15, 20];
@@ -368,7 +377,9 @@ export default class CurrentStoreService extends Service {
   }
   // Assuming sarees come from a service or arguments
   get whatsappLink() {
-    return `https://wa.me/${storeInfo.whatsappNumber}?text=${encodeURIComponent(storeInfo.whatsappMessage)}`;
+    return `https://wa.me/${storeInfo.whatsappNumber}?text=${encodeURIComponent(
+      storeInfo.whatsappMessage
+    )}`;
   }
 
   get handpickedSarees() {

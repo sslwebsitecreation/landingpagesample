@@ -64,12 +64,4 @@ export default class TestimonialsComponent extends Component {
       (this.activeIndex - 1 + this.testimonials.length) %
       this.testimonials.length;
   }
-
-  @action
-  handleKeydown(index, event) {
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      this.activeIndex = index;
-    }
-  }
 }

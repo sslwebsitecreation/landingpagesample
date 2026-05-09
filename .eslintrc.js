@@ -19,10 +19,7 @@ module.exports = {
   env: {
     browser: true,
   },
-  rules: {
-    'no-inline-styles': false,
-    'style-concatenation': false,
-  },
+  rules: {},
   overrides: [
     // node files
     {

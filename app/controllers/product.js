@@ -67,6 +67,12 @@ export default class ProductDetailsController extends Controller {
 
   @action
   openEnquiry() {
+    if (this._enquiryPending) return;
+    this._enquiryPending = true;
+    setTimeout(() => {
+      this._enquiryPending = false;
+    }, 1000);
+
     const product = this.product;
     const variant = this.activeVariant || product.variants[0];
     const productLink = `${window.location.origin}/product/${product.id}`;

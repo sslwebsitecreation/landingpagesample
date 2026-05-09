@@ -44,13 +44,17 @@ export default class FeaturedCollectionComponent extends Component {
       (item) => item.id === product.id
     );
     if (existing) {
-      existing.quantity = (existing.quantity || 1) + 1;
-      this.currentStore.cartItems = [...this.currentStore.cartItems];
+      this.currentStore.cartItems = this.currentStore.cartItems.map((item) => {
+        if (item.id === product.id) {
+          return { ...item, quantity: (item.quantity || 1) + 1 };
+        }
+        return item;
+      });
       this.toast.show('Quantity updated', 'success');
     } else {
       const cartItem = {
         ...product,
-        selectedVariant: this.activeVariant,
+        selectedVariant: product.variants?.[0] || {},
         quantity: 1,
       };
       this.currentStore.cartItems = [...this.currentStore.cartItems, cartItem];
