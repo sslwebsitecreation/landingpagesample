@@ -6,6 +6,7 @@ import { inject as service } from '@ember/service';
 
 export default class FeaturedCollectionComponent extends Component {
   @service currentStore;
+  @service toast;
 
   @tracked activeSaree = this.currentStore.handpickedSarees?.[0] || null;
   @tracked isSwapping = false;
@@ -45,6 +46,7 @@ export default class FeaturedCollectionComponent extends Component {
     if (existing) {
       existing.quantity = (existing.quantity || 1) + 1;
       this.currentStore.cartItems = [...this.currentStore.cartItems];
+      this.toast.show('Quantity updated', 'success');
     } else {
       const cartItem = {
         ...product,
@@ -52,6 +54,7 @@ export default class FeaturedCollectionComponent extends Component {
         quantity: 1,
       };
       this.currentStore.cartItems = [...this.currentStore.cartItems, cartItem];
+      this.toast.show('Selected saree added', 'success');
     }
   }
 }

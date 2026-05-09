@@ -2,10 +2,12 @@
   <div class="studio-container">
 
     <div class="studio-intro">
-      <span class="section-eyebrow">Behind the Loom</span>
-      <h2 class="studio-title">Riya Sri Silks <span>Live Studio</span></h2>
-      <p class="studio-subtitle">Curated Replays & Shoppable Moments</p>
-      <p class="studio-description">Watch our latest showcases and discover the stories woven into every thread.</p>
+      <div class="intro-left">
+        <span class="section-eyebrow">Behind the Loom</span>
+        <h2 class="studio-title">Riya Sri Silks <span>Live Studio</span></h2>
+        <p class="studio-subtitle">Curated Replays & Shoppable Moments</p>
+        <p class="studio-description">Watch our latest showcases and discover the stories woven into every thread.</p>
+      </div>
 
       <div class="channel-action">
         <a href="https://youtube.com/@dummysri" target="_blank" rel="noopener noreferrer" class="youtube-channel-btn">
@@ -13,7 +15,7 @@
             <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
           </span>
           <div class="btn-text">
-            <small>FOLLOW US ON</small>
+            <small>SUBSCRIBE ON</small>
             <span>YouTube</span>
           </div>
         </a>
@@ -66,22 +68,20 @@
 
                 <div class="sidebar-scroll">
                   {{#each this.selectedVideo.featuredSarees as |product|}}
-                    <div class="saree-horizontal-card">
+                    <LinkTo @route="product" @model={{product.id}} class="saree-horizontal-card">
                       <div class="card-thumb">
                         <img src={{product.variants.[0].image}} alt={{product.name}}>
-                        <button type="button" class="mini-add-btn" aria-label="Add to cart">+</button>
+                        <button type="button" class="mini-add-btn" {{on "click" (fn this.addToCart product)}} aria-label="Add to tray">+</button>
                       </div>
 
                       <div class="card-info">
-                        <div class="info-top">
-                          <h5 class="product-name">{{product.name}}</h5>
-                        </div>
-                        <div class="info-bottom">
+                        <h5 class="product-name">{{product.name}}</h5>
+                        <div class="card-meta">
                           <span class="product-price">₹{{product.price}}</span>
-                          <button type="button" class="view-link">Details →</button>
+                          <span class="shop-label">Shop Now →</span>
                         </div>
                       </div>
-                    </div>
+                    </LinkTo>
                   {{/each}}
                 </div>
               </div>

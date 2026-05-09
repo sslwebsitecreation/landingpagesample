@@ -1,10 +1,45 @@
 {{#if this.isVisible}}
-  <div class="page-loading-overlay">
-    <div class="page-loading-spinner">
-      <div class="spinner-ring"></div>
-      <div class="spinner-ring"></div>
-      <div class="spinner-ring"></div>
+  <div class="skeleton-page">
+    <div class="skeleton-container">
+      <div class="skeleton-section skeleton-hero-section">
+        <div class="skeleton-shape skeleton-eyebrow"></div>
+        <div class="skeleton-shape skeleton-hero-title"></div>
+        <div class="skeleton-shape skeleton-hero-sub"></div>
+      </div>
+
+      <div class="skeleton-section skeleton-cards-section">
+        <div class="skeleton-cards-label">
+          <div class="skeleton-shape skeleton-label-shape"></div>
+        </div>
+        <div class="skeleton-grid">
+          <div class="skeleton-card">
+            <div class="skeleton-shape skeleton-card-img"></div>
+            <div class="skeleton-shape skeleton-card-title"></div>
+            <div class="skeleton-shape skeleton-card-price"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-shape skeleton-card-img"></div>
+            <div class="skeleton-shape skeleton-card-title"></div>
+            <div class="skeleton-shape skeleton-card-price"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-shape skeleton-card-img"></div>
+            <div class="skeleton-shape skeleton-card-title"></div>
+            <div class="skeleton-shape skeleton-card-price"></div>
+          </div>
+          <div class="skeleton-card">
+            <div class="skeleton-shape skeleton-card-img"></div>
+            <div class="skeleton-shape skeleton-card-title"></div>
+            <div class="skeleton-shape skeleton-card-price"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="skeleton-section skeleton-list-section">
+        <div class="skeleton-shape skeleton-list-item"></div>
+        <div class="skeleton-shape skeleton-list-item"></div>
+        <div class="skeleton-shape skeleton-list-item"></div>
+      </div>
     </div>
-    <p class="page-loading-text">Loading...</p>
   </div>
 {{/if}}

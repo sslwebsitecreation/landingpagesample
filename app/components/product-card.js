@@ -4,7 +4,8 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 
 export default class ProductCardComponent extends Component {
-  @service currentStore; // Assuming you have a cart service
+  @service currentStore;
+  @service toast;
   @tracked activeVariant = this.args.product.variants?.[0] || {};
 
   get stockClass() {
@@ -27,8 +28,13 @@ export default class ProductCardComponent extends Component {
       (item) => item.id === product.id
     );
     if (existing) {
-      existing.quantity = (existing.quantity || 1) + 1;
-      this.currentStore.cartItems = [...this.currentStore.cartItems];
+      this.currentStore.cartItems = this.currentStore.cartItems.map((item) => {
+        if (item.id === product.id) {
+          return { ...item, quantity: (item.quantity || 1) + 1 };
+        }
+        return item;
+      });
+      this.toast.show('Quantity updated', 'success');
     } else {
       const cartItem = {
         ...product,
@@ -36,6 +42,7 @@ export default class ProductCardComponent extends Component {
         quantity: 1,
       };
       this.currentStore.cartItems = [...this.currentStore.cartItems, cartItem];
+      this.toast.show('Selected saree added', 'success');
     }
   }
 }

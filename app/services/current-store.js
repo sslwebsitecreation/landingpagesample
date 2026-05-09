@@ -280,8 +280,10 @@ const storeInfo = {
   address: 'Sm Main Rd, mamallapuram, Tamil Nadu 600028',
   phone: '9383567645',
   email: 'riyasrisilks@gmail.com',
-  instagram: 'https://www.instagram.com/_official__/',
-  youtube: 'https://www.youtube.com/@madangowri',
+  instagram: 'https://www.instagram.com/riyasri_silks/',
+  youtube: 'https://www.youtube.com/@riyasrisilk',
+  whatsappNumber: '919876543210',
+  whatsappMessage: 'Hello Riya Sri Silks, shown your sarees in your website store, I am interested in purchasing. Please share more details.',
 };
 
 const handpickedSareesIds = [1, 5, 10, 15, 20];
@@ -342,6 +344,10 @@ export default class CurrentStoreService extends Service {
     return videos;
   }
   // Assuming sarees come from a service or arguments
+  get whatsappLink() {
+    return `https://wa.me/${storeInfo.whatsappNumber}?text=${encodeURIComponent(storeInfo.whatsappMessage)}`;
+  }
+
   get handpickedSarees() {
     return this.products.filter((p) => this.featuredIds.includes(p.id));
   }

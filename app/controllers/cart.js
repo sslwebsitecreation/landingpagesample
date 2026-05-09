@@ -4,6 +4,7 @@ import { action } from '@ember/object';
 
 export default class CartController extends Controller {
   @service currentStore;
+  @service toast;
 
   whatsappNumber = '919876543210';
 
@@ -16,25 +17,34 @@ export default class CartController extends Controller {
 
   @action
   removeItem(index) {
-    const items = [...this.currentStore.cartItems];
-    items.splice(index, 1);
-    this.currentStore.cartItems = items;
+    const removed = this.currentStore.cartItems[index];
+    this.currentStore.cartItems = this.currentStore.cartItems.filter((_, i) => i !== index);
+    this.toast.show(`${removed.name} removed`, 'info');
   }
 
   @action
   increaseQty(index) {
-    const items = [...this.currentStore.cartItems];
-    items[index].quantity = (items[index].quantity || 1) + 1;
-    this.currentStore.cartItems = items;
+    this.currentStore.cartItems = this.currentStore.cartItems.map((item, i) => {
+      if (i === index) {
+        return { ...item, quantity: (item.quantity || 1) + 1 };
+      }
+      return item;
+    });
+    this.toast.show('Quantity updated', 'success');
   }
 
   @action
   decreaseQty(index) {
-    const items = [...this.currentStore.cartItems];
-    if (items[index].quantity > 1) {
-      items[index].quantity--;
-      this.currentStore.cartItems = items;
-    }
+    const current = this.currentStore.cartItems[index];
+    if (!current || current.quantity <= 1) return;
+
+    this.currentStore.cartItems = this.currentStore.cartItems.map((item, i) => {
+      if (i === index) {
+        return { ...item, quantity: item.quantity - 1 };
+      }
+      return item;
+    });
+    this.toast.show('Quantity updated', 'success');
   }
 
   @action

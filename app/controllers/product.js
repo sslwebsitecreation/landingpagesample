@@ -5,6 +5,7 @@ import { inject as service } from '@ember/service';
 
 export default class ProductDetailsController extends Controller {
   @service currentStore;
+  @service toast;
 
   @tracked isModalOpen = false;
   @tracked activeVariant = null;
@@ -46,8 +47,13 @@ export default class ProductDetailsController extends Controller {
     );
 
     if (existing) {
-      existing.quantity = (existing.quantity || 1) + 1;
-      this.currentStore.cartItems = [...this.currentStore.cartItems];
+      this.currentStore.cartItems = this.currentStore.cartItems.map((item) => {
+        if (item.id === this.product.id) {
+          return { ...item, quantity: (item.quantity || 1) + 1 };
+        }
+        return item;
+      });
+      this.toast.show('Quantity updated', 'success');
     } else {
       const cartItem = {
         ...this.product,
@@ -55,6 +61,7 @@ export default class ProductDetailsController extends Controller {
         quantity: 1,
       };
       this.currentStore.cartItems = [...this.currentStore.cartItems, cartItem];
+      this.toast.show('Selected saree added', 'success');
     }
   }
 

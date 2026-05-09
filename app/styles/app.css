@@ -10,6 +10,7 @@
 @import './collections.css';
 @import './testimonials.css';
 @import './pages.css';
+@import './toast.css';
 
 :root {
   --accent-gold: #c5a059;
@@ -183,6 +184,16 @@ body {
   background: #25D366;
   color: #fff;
   box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+}
+
+.social-link--instagram {
+  color: #E1306C;
+  background: rgba(225, 48, 108, 0.08);
+}
+.social-link--instagram:hover {
+  background: #E1306C;
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(225, 48, 108, 0.3);
 }
 
 .footer-columns {
@@ -499,6 +510,141 @@ body {
    ========================================================================== */
 @media (min-width: 768px) {
   .mobile-bottom-nav { display: none; }
+}
+
+/* ==========================================================================
+   SKELETON LOADING
+   ========================================================================== */
+
+.skeleton-page {
+  min-height: 100vh;
+  background: #FCFAF8;
+  padding: 100px 24px 40px;
+}
+
+.skeleton-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.skeleton-section {
+  margin-bottom: 50px;
+}
+
+.skeleton-hero-section {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 40px 0;
+}
+
+.skeleton-eyebrow {
+  width: 80px;
+  height: 12px;
+  border-radius: 6px;
+}
+
+.skeleton-hero-title {
+  width: 320px;
+  height: 36px;
+  border-radius: 10px;
+}
+
+.skeleton-hero-sub {
+  width: 220px;
+  height: 16px;
+  border-radius: 8px;
+}
+
+.skeleton-cards-label {
+  margin-bottom: 24px;
+}
+
+.skeleton-label-shape {
+  width: 140px;
+  height: 18px;
+  border-radius: 8px;
+}
+
+.skeleton-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.skeleton-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skeleton-card-img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+}
+
+.skeleton-card-title {
+  width: 75%;
+  height: 16px;
+  border-radius: 8px;
+}
+
+.skeleton-card-price {
+  width: 40%;
+  height: 14px;
+  border-radius: 8px;
+}
+
+.skeleton-list-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.skeleton-list-item {
+  width: 100%;
+  height: 80px;
+  border-radius: 14px;
+}
+
+.skeleton-shape {
+  background: linear-gradient(
+    90deg,
+    #f0ede8 0%,
+    #f7f5f0 40%,
+    #e8e5e0 70%,
+    #f0ede8 100%
+  );
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@media (max-width: 992px) {
+  .skeleton-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  .skeleton-hero-title { width: 240px; height: 30px; }
+  .skeleton-page { padding: 90px 16px 30px; }
+}
+
+@media (max-width: 480px) {
+  .skeleton-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .skeleton-hero-title { width: 180px; height: 26px; }
+  .skeleton-card-img { border-radius: 12px; }
+  .skeleton-page { padding: 80px 12px 20px; }
+  .skeleton-hero-section { padding: 20px 0; gap: 12px; }
 }
 
 /* Floating Action Button */

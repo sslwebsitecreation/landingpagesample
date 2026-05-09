@@ -6,6 +6,7 @@ import { next, later } from '@ember/runloop';
 
 export default class VideoStudioComponent extends Component {
   @service currentStore;
+  @service toast;
   @tracked selectedVideo = null;
   @tracked isVisible = false;
 
@@ -51,5 +52,31 @@ export default class VideoStudioComponent extends Component {
   @action
   closeStudio() {
     this.isVisible = false;
+    this.selectedVideo = null;
+  }
+
+  @action
+  addToCart(product, event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const existing = this.currentStore.cartItems.find(
+      (item) => item.id === product.id
+    );
+    if (existing) {
+      this.currentStore.cartItems = this.currentStore.cartItems.map((item) => {
+        if (item.id === product.id) {
+          return { ...item, quantity: (item.quantity || 1) + 1 };
+        }
+        return item;
+      });
+    } else {
+      const cartItem = {
+        ...product,
+        selectedVariant: product.variants?.[0] || {},
+        quantity: 1,
+      };
+      this.currentStore.cartItems = [...this.currentStore.cartItems, cartItem];
+      this.toast.show('Selected saree added', 'success');
+    }
   }
 }
