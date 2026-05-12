@@ -1,10 +1,36 @@
 {{#if @visible}}
-  <div class="search-filter-overlay" {{on "click" @onClose}} {{act-as-a-button}}>
-    <div class="search-filter-modal {{if @position (concat "search-filter-modal--" @position)}}" role="dialog" aria-modal="true" {{on "click" this.stopPropagation}}>
+  <div
+    class="search-filter-overlay"
+    {{on "click" @onClose}}
+    {{act-as-a-button}}
+  >
+    <div
+      class="search-filter-modal {{if @position (concat "search-filter-modal--" @position)}}"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="sfm-title"
+      {{on "click" this.stopPropagation}}
+    >
       <div class="sfm-header">
-        <h3 class="sfm-title">Search & Filter</h3>
-        <button type="button" class="sfm-close" {{on "click" @onClose}} aria-label="Close filter">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <h3 id="sfm-title" class="sfm-title">
+          Search & Filter
+        </h3>
+
+        <button
+          type="button"
+          class="sfm-close"
+          {{on "click" @onClose}}
+          aria-label="Close filter"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="20"
+            height="20"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
@@ -12,15 +38,27 @@
       </div>
 
       <div class="sfm-body">
-        {{!-- Search Input (always visible, prominent on mobile) --}}
+
+        {{!-- Main Search --}}
         <div class="sfm-field sfm-field--search">
           <label class="sfm-label" for="sfm-search-input">
-            <svg class="sfm-search-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <svg
+              class="sfm-search-icon"
+              viewBox="0 0 24 24"
+              width="18"
+              height="18"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+            >
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
+
             Search
           </label>
+
           <div class="sfm-search-wrapper">
             <input
               id="sfm-search-input"
@@ -28,13 +66,26 @@
               class="sfm-input sfm-input--search"
               placeholder="Search sarees, fabrics, styles..."
               value={{this.localQuery}}
-              {{on "input" this.handleLocalInput}}
-              {{on "keyup" this.handleKeyDown}}
-              {{autofocus this.isMobile}}
+              {{on "input" this.handleSearchInput}}
+              {{on "keyup" this.handleSearchKeyDown}}
             />
+
             {{#if this.localQuery}}
-              <button type="button" class="sfm-search-clear" {{on "click" this.clearLocalSearch}} aria-label="Clear search">
-                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <button
+                type="button"
+                class="sfm-input-clear"
+                {{on "click" this.clearLocalSearch}}
+                aria-label="Clear search"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -43,50 +94,104 @@
           </div>
         </div>
 
+        {{!-- Category --}}
         <div class="sfm-field">
-          <label class="sfm-label" for="category-input">Category</label>
+          <label class="sfm-label" for="category-input">
+            Category
+          </label>
+
           <div class="sfm-autocomplete">
             <input
               id="category-input"
               type="text"
               class="sfm-input"
               placeholder="Select category..."
-              value={{if this.search.selectedCategory this.search.selectedCategory.name this.localQuery}}
-              {{on "input" this.handleLocalInput}}
-              {{on "keyup" this.handleKeyDown}}
+              value={{this.categoryQuery}}
+              {{on "input" this.handleCategoryInput}}
               {{on "focus" this.handleCategoryFocus}}
               {{on "blur" this.handleCategoryBlur}}
+              autocomplete="off"
             />
+
+            {{#if this.categoryQuery}}
+              <button
+                type="button"
+                class="sfm-input-clear"
+                {{on "mousedown" this.clearCategory}}
+                aria-label="Clear category"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            {{/if}}
+
             {{#if this.categoryInputFocused}}
-              <div class="sfm-dropdown">
+              <div class="sfm-dropdown" role="listbox">
+
                 {{#if this.search.selectedCategory}}
-                  <button type="button" class="sfm-dropdown-item sfm-clear" {{on "click" this.search.clearCategory}}>
+                  <button
+                    type="button"
+                    class="sfm-dropdown-item sfm-clear"
+                    {{on "mousedown" this.clearCategory}}
+                    role="option"
+                  >
                     Clear selection
                   </button>
                 {{/if}}
+
                 {{#each this.filteredCategories as |category|}}
                   <button
                     type="button"
+                    role="option"
                     class="sfm-dropdown-item {{if (equal category.category_id this.search.selectedCategory.category_id) "sfm-selected"}}"
-                    {{on "pointerup" (fn this.selectCategory category)}}
+                    {{on "mousedown" (fn this.selectCategory category)}}
                   >
                     {{category.name}}
                   </button>
                 {{/each}}
+
               </div>
             {{/if}}
           </div>
         </div>
 
+        {{!-- Tags --}}
         <div class="sfm-field">
-          <label class="sfm-label" for="tags-input">Tags (multiple)</label>
+          <label class="sfm-label" for="tags-input">
+            Tags (multiple)
+          </label>
+
           {{#if this.search.selectedTags.length}}
             <div class="sfm-tags">
               {{#each this.search.selectedTags as |tag|}}
                 <span class="sfm-tag">
                   {{tag}}
-                  <button type="button" class="sfm-tag-remove" {{on "click" (fn this.removeTag tag)}} aria-label="Remove {{tag}}">
-                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+
+                  <button
+                    type="button"
+                    class="sfm-tag-remove"
+                    {{on "click" (fn this.removeTag tag)}}
+                    aria-label="Remove {{tag}}"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      width="12"
+                      height="12"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    >
                       <line x1="18" y1="6" x2="6" y2="18"></line>
                       <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
@@ -95,33 +200,72 @@
               {{/each}}
             </div>
           {{/if}}
+
           <div class="sfm-autocomplete">
             <input
               id="tags-input"
               type="text"
               class="sfm-input"
               placeholder="Add tags..."
-              {{on "input" this.handleLocalInput}}
-              {{on "keyup" this.handleKeyDown}}
+              value={{this.tagQuery}}
+              {{on "input" this.handleTagInput}}
               {{on "focus" this.handleTagFocus}}
               {{on "blur" this.handleTagBlur}}
+              autocomplete="off"
             />
+
+            {{#if this.tagQuery}}
+              <button
+                type="button"
+                class="sfm-input-clear"
+                {{on "click" this.clearTagInput}}
+                aria-label="Clear tags"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            {{/if}}
+
             {{#if this.tagInputFocused}}
-              <div class="sfm-dropdown sfm-dropdown--tags">
+              <div
+                class="sfm-dropdown sfm-dropdown--tags"
+                role="listbox"
+              >
                 {{#each this.filteredTags as |tag|}}
                   <button
                     type="button"
-                    class="sfm-dropdown-item sfm-tag-item {{if (includes tag this.search.selectedTags) "sfm-selected"}}"
-                    {{on "pointerup" (fn this.toggleTag tag)}}
+                    role="option"
                     aria-pressed="{{if (includes tag this.search.selectedTags) "true" "false"}}"
+                    class="sfm-dropdown-item sfm-tag-item {{if (includes tag this.search.selectedTags) "sfm-selected"}}"
+                    {{on "mousedown" (fn this.toggleTag tag)}}
                   >
                     <div class="sfm-checkbox {{if (includes tag this.search.selectedTags) "sfm-checkbox--checked"}}">
                       {{#if (includes tag this.search.selectedTags)}}
-                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <svg
+                          viewBox="0 0 24 24"
+                          width="14"
+                          height="14"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="3"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
                           <polyline points="20 6 9 17 4 12"></polyline>
                         </svg>
                       {{/if}}
                     </div>
+
                     {{tag}}
                   </button>
                 {{/each}}
@@ -132,14 +276,32 @@
       </div>
 
       <div class="sfm-footer">
-        <button type="button" class="sfm-clear-all" {{on "click" this.search.clearAll}}>
+        <button
+          type="button"
+          class="sfm-clear-all"
+          {{on "click" this.clearAll}}
+        >
           Clear All
         </button>
-        <button type="button" class="sfm-search-btn" {{on "click" this.performSearch}}>
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+
+        <button
+          type="button"
+          class="sfm-search-btn"
+          {{on "click" this.performSearch}}
+        >
+          <svg
+            viewBox="0 0 24 24"
+            width="18"
+            height="18"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+          >
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
+
           Search
         </button>
       </div>
