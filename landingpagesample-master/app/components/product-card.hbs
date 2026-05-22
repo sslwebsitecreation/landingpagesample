@@ -1,0 +1,74 @@
+<LinkTo @route="product" @model={{@product.id}} class="boutique-card-link">
+  <div class="boutique-card {{this.stockClass}}">
+    
+    {{!-- Image Section --}}
+    <div class="image-area">
+      <div class="badge-overlay">
+        {{#if (equal @product.status 'out_of_stock')}}
+          <span class="pill pill-oos">Sold Out</span>
+        {{else if (equal @product.status 'limited_stock')}}
+          <span class="pill pill-limited">Limited Stock</span>
+        {{/if}}
+
+        {{#if @product.discount}}
+          <span class="pill pill-discount">-{{@product.discount}}%</span>
+        {{/if}}
+      </div>
+
+      <img src={{this.activeVariant.image}} alt={{@product.name}} class="main-img" loading="lazy" width="200" height="267">
+
+      <button type="button" class="quick-add-btn" {{on "click" (fn this.addToCart @product)}} aria-label="Add to cart">
+        <span>+</span>
+      </button>
+    </div>
+
+    {{!-- Content Section --}}
+    <div class="content-area">
+      <div class="meta-row">
+        <div class="titles">
+          <h4 class="product-name">{{@product.name}}</h4>
+        </div>
+        <div class="pricing">
+          <span class="price-now">₹{{@product.price}}</span>
+          {{#if @product.oldPrice}}
+            <span class="price-was">₹{{@product.oldPrice}}</span>
+          {{/if}}
+        </div>
+      </div>
+
+      <div class="status-row">
+        <div class="rating">
+          <span class="star">★</span>
+          <span class="val">{{@product.rating}}</span>
+        </div>
+        {{#if (equal @product.status 'in_stock')}}
+          <span class="stock-text">• In Stock</span>
+        {{/if}}
+      </div>
+
+      <div class="swatch-container">
+        {{#each (take 5 @product.variants) as |variant|}}
+          <button 
+            type="button" 
+            class="swatch-ring {{if (equal this.activeVariant.id variant.id) 'is-active'}}"
+            {{on "click" (fn this.selectVariant variant)}}
+          >
+            {{!-- template-lint-disable style-concatenation --}}
+            {{!-- template-lint-disable no-inline-styles --}}
+            <span class="swatch-dot" style="background-color: {{variant.hex}}"></span>
+          </button>
+        {{/each}}
+        
+        {{#if (gt @product.variants.length 5)}}
+          <span class="more-indicator">+{{sub @product.variants.length 5}}</span>
+        {{/if}}
+      </div>
+
+      {{!-- Animated Footer Reveal --}}
+      <div class="view-details-footer">
+        View Details <span>→</span>
+      </div>
+    </div>
+
+  </div>
+</LinkTo>

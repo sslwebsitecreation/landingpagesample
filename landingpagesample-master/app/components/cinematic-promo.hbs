@@ -1,0 +1,35 @@
+<section class="cinematic-3d-wrap" {{did-insert this.setup3DScroll}}>
+  <div class="viewport-constrain">
+
+    {{!-- Background Layer (Parallax Fabric) --}}
+    <div class="parallax-back">
+      <div class="gradient-bg"></div>
+    </div>
+
+    {{!-- The 3D Tilt Card --}}
+    {{!-- template-lint-disable no-inline-styles --}}
+    <div class="promo-3d-card" style="transform: rotateX(var(--scroll-tilt)) scale(var(--scroll-scale))">
+      <div class="glass-layer-light">
+        <div class="content-depth-light">
+          <span class="label">Exclusive Offer</span>
+          <h2 class="title">Handcrafted <br> Legacy</h2>
+
+          <div class="price-feature">
+            <span class="save-up">SAVE UP TO</span>
+            <div class="number-wrap">
+              <span class="digit">40</span>
+              <span class="symbol">%</span>
+            </div>
+          </div>
+
+          <p class="desc">Pure silk sarees, woven with tradition and modern grace.</p>
+
+          <LinkTo @route="collections" class="luxury-cta-light">
+            View Collection <span>→</span>
+          </LinkTo>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

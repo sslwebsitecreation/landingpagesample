@@ -1,0 +1,48 @@
+<section class="testimonials-section" {{scroll-reveal delay=100}}>
+  <div class="testimonials-container">
+    <header class="testimonials-header">
+      <span class="section-eyebrow">Love Letters</span>
+      <h2 class="testimonials-title">What Our <span>Clients</span> Say</h2>
+      <p class="testimonials-subtitle">Trusted by thousands of saree lovers across India</p>
+    </header>
+
+    <div class="testimonials-grid">
+      {{#each this.testimonials as |testimonial index|}}
+        <div
+          class="testimonial-card {{if (equal index this.activeIndex) 'is-active' ''}}"
+          {{on "click" (fn this.setActive index)}}
+          {{act-as-a-button}}
+        >
+          <div class="testimonial-quote-mark">"</div>
+          <p class="testimonial-text">{{testimonial.text}}</p>
+          <div class="testimonial-footer">
+            <div class="testimonial-author">
+              <img class="testimonial-avatar" src="{{testimonial.avatar}}" alt="{{testimonial.name}}" loading="lazy" width="48" height="48" />
+              <div class="author-info">
+                <span class="author-name">{{testimonial.name}}</span>
+                <span class="author-location">{{testimonial.location}}</span>
+              </div>
+            </div>
+            <div class="testimonial-rating">
+              {{#if (gte testimonial.rating 1)}}<span class="star is-filled">&#9733;</span>{{else}}<span class="star">&#9733;</span>{{/if}}
+              {{#if (gte testimonial.rating 2)}}<span class="star is-filled">&#9733;</span>{{else}}<span class="star">&#9733;</span>{{/if}}
+              {{#if (gte testimonial.rating 3)}}<span class="star is-filled">&#9733;</span>{{else}}<span class="star">&#9733;</span>{{/if}}
+              {{#if (gte testimonial.rating 4)}}<span class="star is-filled">&#9733;</span>{{else}}<span class="star">&#9733;</span>{{/if}}
+              {{#if (gte testimonial.rating 5)}}<span class="star is-filled">&#9733;</span>{{else}}<span class="star">&#9733;</span>{{/if}}
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+
+    <div class="testimonials-nav">
+      <button type="button" class="nav-arrow prev" {{on "click" this.prevTestimonial}} aria-label="Previous testimonial">&#8592;</button>
+      <div class="nav-dots">
+        {{#each this.testimonials as |_ index|}}
+          <button type="button" class="nav-dot {{if (equal index this.activeIndex) 'is-active' ''}}" {{on "click" (fn this.setActive index)}} aria-label="Go to testimonial {{includes index}}"></button>
+        {{/each}}
+      </div>
+      <button type="button" class="nav-arrow next" {{on "click" this.nextTestimonial}} aria-label="Next testimonial">&#8594;</button>
+    </div>
+  </div>
+</section>

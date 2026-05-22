@@ -1,0 +1,77 @@
+<section class="luxury-3d-showcase" {{scroll-reveal delay=100}}>
+  <div class="showcase-container">
+
+    <div class="showcase-header">
+      <div class="header-main">
+        <span class="eyebrow">The Signature Series</span>
+        <h2 class="title">Handpicked <span>Masterpieces</span></h2>
+        <p class="header-desc">An elite curation of exceptional weaves, chosen for their unparalleled artistry.</p>
+      </div>
+
+      <div class="header-aside">
+        <LinkTo @route="collections" class="unified-explore-btn">
+          Explore Full Store <span>→</span>
+        </LinkTo>
+      </div>
+    </div>
+
+    <div class="showcase-main">
+      <div class="saree-nav">
+        {{#each this.currentStore.handpickedSarees as |saree index|}}
+          <div class="nav-item-wrapper {{if (equal this.activeSaree.id saree.id) 'is-active'}}">
+            <button type="button" class="nav-card" {{on "click" (fn this.selectSaree saree)}}>
+              <div class="nav-rank">0{{add index 1}}</div>
+              <div class="nav-info">
+                <span class="nav-fabric">{{saree.fabric}}</span>
+                <div class="nav-title">{{saree.name}}</div>
+              </div>
+              <div class="mobile-indicator">
+                 <div class="plus-box"></div>
+              </div>
+            </button>
+
+            <div class="mobile-accordion-reveal">
+              <div class="reveal-content">
+                <div class="reveal-img-container">
+                  <img src={{saree.variants.[0].image}} alt={{saree.name}} loading="lazy" width="200" height="267">
+                </div>
+                <div class="reveal-details">
+                  <p class="reveal-desc">{{saree.description}}</p>
+                  <button type="button" class="mobile-action-btn" {{on "click" (fn this.addToCart saree)}}>
+                    <span class="btn-label">Add to Collection</span>
+                    <span class="btn-price">₹{{saree.price}}</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+
+      <div class="saree-stage-perspective">
+        {{#if this.activeSaree}}
+          <div class="cinema-platform {{if this.isSwapping 'platform-flick'}}">
+            <div class="plate image-plate">
+              <img src={{this.activeSaree.variants.[0].image}} alt={{this.activeSaree.name}} loading="eager" width="400" height="533">
+              <div class="glass-tag"><span>{{this.activeSaree.fabric}}</span></div>
+            </div>
+
+            <div class="plate content-plate">
+              <div class="content-top">
+                <h3 class="active-name">{{this.activeSaree.name}}</h3>
+                <p class="active-desc">{{this.activeSaree.description}}</p>
+              </div>
+              <div class="content-bottom">
+                <div class="active-price">
+                  <small>Retail Price</small>
+                  <span>₹{{this.activeSaree.price}}</span>
+                </div>
+                <button type="button" class="luxury-cta" {{on "click" (fn this.addToCart this.activeSaree)}}>Add to Collection</button>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</section>

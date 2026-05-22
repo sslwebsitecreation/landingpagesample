@@ -1,0 +1,109 @@
+<div class="luxury-page-container">
+  
+  {{!-- SECTION 1: 3D PRODUCT VIEW --}}
+  <section class="product-core-layout">
+    
+    {{!-- Left Side: Floating Asset --}}
+    <div class="visual-stage">
+      <div class="floating-3d-card" {{on "click" this.openModal}} {{act-as-a-button}}>
+        <img src={{this.activeVariant.image}} alt={{this.product.name}} class="product-asset" width="380" height="550">
+        <div class="glass-reflection"></div>
+        <div class="view-indicator">TAP TO ENLARGE</div>
+      </div>
+    </div>
+
+    {{!-- Right Side: Editorial Content --}}
+    <div class="editorial-stage">
+      <div class="glass-sheet">
+        <div class="sheet-handle"></div>
+
+        {{!-- Blink Indicator Stock --}}
+        <div class="stock-ticker">
+          <span class="blink-circle {{if this.product.inStock 'online' 'offline'}}"></span>
+          {{if this.product.inStock "Heirloom in Stock" "Out of Stock"}}
+        </div>
+
+        <h1 class="editorial-name">{{this.product.name}}</h1>
+
+        <div class="price-architecture">
+          <div class="main-price">₹{{this.product.price}}</div>
+          {{#if this.product.oldPrice}}
+            <span class="old-price">₹{{this.product.oldPrice}}</span>
+            <span class="off-badge">{{this.product.discount}}% OFF</span>
+          {{/if}}
+        </div>
+
+        <div class="rating-strip">★★★★★ <span class="count">({{this.product.rating}})</span></div>
+
+        {{!-- Variant Color moved BEFORE Description --}}
+        {{#if this.product.variants.length}}
+          <div class="color-curation">
+            <label>Select Essence</label>
+            <div class="swatch-row">
+              {{#each this.product.variants as |variant|}}
+                <button type="button" 
+                  class="swatch-orbit {{if (equal this.activeVariant.id variant.id) 'active'}}"
+                  {{on "click" (fn this.selectVariant variant)}}>
+                  {{!-- template-lint-disable no-inline-styles --}}
+                  {{!-- template-lint-disable style-concatenation --}}
+                  <span class="swatch-core" style="background-color: {{variant.hex}}"></span>
+                </button>
+              {{/each}}
+            </div>
+          </div>
+        {{/if}}
+
+        <p class="editorial-description">{{this.product.description}}</p>
+
+        {{!-- Metadata Rows --}}
+        <div class="detail-grid">
+          <div class="detail-row">
+            <span class="label">Category</span>
+            <div class="value link-style">{{this.product.category}}</div>
+          </div>
+          <div class="detail-row">
+            <span class="label">Style Tags</span>
+            <div class="tag-cloud">
+              {{#each this.product.tags as |tag|}}
+                <span class="luxury-pill">{{tag}}</span>
+              {{/each}}
+            </div>
+          </div>
+        </div>
+
+        <div class="action-footer">
+          <button type="button" class="btn-wa-direct" {{on "click" this.openEnquiry}}>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="" role="presentation" class="wa-icon">
+            ENQUIRE ON WHATSAPP
+          </button>
+          <button type="button" class="btn-bag" {{on "click" this.addToCart}}>
+            ADD TO TRAY
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{!-- SECTION 2: RELATED --}}
+  <section class="related-section">
+    <div class="related-wrapper">
+      <div class="section-heading">
+        <h2>You Might Also Like</h2>
+        <div class="gold-accent"></div>
+      </div>
+      <div class="saree-grid">
+        {{#each this.model.relatedProducts as |saree|}}
+          <ProductCard @product={{saree}} />
+        {{/each}}
+      </div>
+    </div>
+  </section>
+</div>
+
+{{!-- Expand Modal --}}
+{{#if this.isModalOpen}}
+  <div class="modal-blur-overlay" {{on "click" this.closeModal}} {{act-as-a-button}}>
+    <button type="button" class="modal-exit" {{on "click" this.closeModal}}>✕</button>
+    <img src={{this.activeVariant.image}} class="modal-highres-img" alt="Variant" loading="lazy" width="800" height="1000">
+  </div>
+{{/if}}
