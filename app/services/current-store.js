@@ -26,9 +26,8 @@ export default class CurrentStoreService extends Service {
     if (this.cache.isCacheValid(this.CACHE_TTL)) {
       try {
         const cached = await this.cache.loadCatalog();
-        if (cached.products.length) {
+        if (cached && cached.products.length) {
           this._hydrate(cached);
-          this._backgroundRefresh();
           return;
         }
       } catch {
@@ -60,7 +59,7 @@ export default class CurrentStoreService extends Service {
   async _fullFetch() {
     if (this._fetching) return this._fetching;
 
-    const API_URL = ENV.APP.apiUrl || '/api/v1';
+    const API_URL = ENV.APP.apiBaseUrl || '/api/v1';
 
     this._fetching = fetch(`${API_URL}/all`)
       .then((r) => {
@@ -214,15 +213,6 @@ export default class CurrentStoreService extends Service {
       tubeVideos,
       featuredIds,
     };
-  }
-
-  async _backgroundRefresh() {
-    if (!navigator.onLine) return;
-    try {
-      await this._fullFetch();
-    } catch {
-      // cached data is already showing — fail silently
-    }
   }
 
   get youtubeVideos() {
