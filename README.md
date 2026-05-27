@@ -49,7 +49,7 @@ npm start          # ember serve → http://localhost:4200
 | `npm run lint` | Run all linters |
 | `npm run lint:fix` | Auto-fix lint issues |
 | `npm test` | Run linters + tests |
-| `npm run deploy` | Build + deploy to GitHub Pages |
+| `npm run build`  | Production build to `dist/` (output for Cloudflare Pages) |
 
 ## Architecture
 
@@ -126,13 +126,27 @@ app/
 └── templates/        # Route templates
 ```
 
-## Deployment
+## Deployment (Cloudflare Pages)
 
-```bash
-npm run deploy
-```
+This app is ready to deploy to Cloudflare Pages.
 
-Builds with `--environment=production` and publishes to GitHub Pages. The app serves from `/landingpagesample/` (configured in `config/environment.js`).
+1. Connect your Git repository to Cloudflare Pages
+2. Set the build command to `npm run build`
+3. Set the build output directory to `dist/`
+4. Deploy
+
+> Hash routing (`/#/`) is used so every path resolves to `index.html` — no SPA redirect rules needed.
+
+### Environment Variables (Cloudflare Pages)
+
+Configure these in the Cloudflare Pages dashboard under **Settings > Environment variables**:
+
+| Variable | Description | Example |
+|----------|-------------|---------|
+| `apiBaseUrl` | API base URL (relative or absolute) | `/api/v1` |
+| `imageCdnUrl` | CDN base URL for product images | `https://images.example.com` |
+
+> **Note:** In this Ember app, these values are currently hardcoded in `config/environment.js`. To make them truly dynamic per environment, you would need to inject them at build time via Cloudflare Pages build variables.
 
 ## Browser Support
 

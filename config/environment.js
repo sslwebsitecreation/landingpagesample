@@ -4,7 +4,7 @@ module.exports = function (environment) {
   let ENV = {
     modulePrefix: 'dummysri',
     environment,
-    rootURL: '/landingpagesample/',
+    rootURL: '/',
     locationType: 'hash',
     EmberENV: {
       FEATURES: {
@@ -19,6 +19,8 @@ module.exports = function (environment) {
 
     APP: {
       buildStamp: Date.now(),
+      apiBaseUrl: '/api/v1',
+      imageCdnUrl: 'https://images.abc.in',
     },
   };
 
@@ -43,7 +45,8 @@ module.exports = function (environment) {
   }
 
   if (environment === 'production') {
-    // here you can enable a production-specific feature
+    ENV.locationType = 'hash';
+    ENV.rootURL = '/';
   }
 
   return ENV;

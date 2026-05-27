@@ -139,8 +139,15 @@ export default class CacheService extends Service {
     return String(ENV.APP.buildStamp || '0');
   }
 
-  isCacheValid() {
-    return this.version === this.buildStamp;
+  isCacheValid(ttlMinutes = null) {
+    if (this.version !== this.buildStamp) return false;
+    if (ttlMinutes) {
+      const lastFetched = localStorage.getItem('dummysri-last-fetched');
+      if (!lastFetched) return false;
+      const age = (Date.now() - Number(lastFetched)) / 60000;
+      if (age > ttlMinutes) return false;
+    }
+    return true;
   }
 
   invalidateCache() {
@@ -174,6 +181,7 @@ export default class CacheService extends Service {
       this.setItem('featuredIds', data.featuredIds || []),
     ]);
     this.version = this.buildStamp;
+    localStorage.setItem('dummysri-last-fetched', String(Date.now()));
   }
 
   async clearCatalog() {
