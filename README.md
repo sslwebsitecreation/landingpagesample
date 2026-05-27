@@ -128,25 +128,46 @@ app/
 
 ## Deployment (Cloudflare Pages)
 
-This app is ready to deploy to Cloudflare Pages.
+This app is ready to deploy to Cloudflare Pages at your custom domain (`riyasrisilks.in`).
 
-1. Connect your Git repository to Cloudflare Pages
-2. Set the build command to `npm run build`
-3. Set the build output directory to `dist/`
-4. Deploy
+### 1. Create a Cloudflare Pages project
 
-> Hash routing (`/#/`) is used so every path resolves to `index.html` — no SPA redirect rules needed.
+Connect your Git repository to Cloudflare Pages:
 
-### Environment Variables (Cloudflare Pages)
+| Setting | Value |
+|---------|-------|
+| Build command | `npm run build` |
+| Build output directory | `dist/` |
 
-Configure these in the Cloudflare Pages dashboard under **Settings > Environment variables**:
+History routing (`/collections` instead of `/#/collections`) is used for clean URLs. The `public/_redirects` file tells Cloudflare to serve `index.html` for all paths (SPA fallback).
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `apiBaseUrl` | API base URL (relative or absolute) | `/api/v1` |
-| `imageCdnUrl` | CDN base URL for product images | `https://images.example.com` |
+### 2. Bind D1 database
 
-> **Note:** In this Ember app, these values are currently hardcoded in `config/environment.js`. To make them truly dynamic per environment, you would need to inject them at build time via Cloudflare Pages build variables.
+The API endpoint (`/api/v1/all`) is served by a **Pages Function** at `functions/api/v1/all.js` which queries D1 directly — no separate server, no CORS needed.
+
+In your Pages project dashboard:
+
+1. Go to **Settings → Functions → D1 Database Bindings**
+2. Add a binding:
+   - **Variable name:** `DB`
+   - **Database:** `dddyetr`
+3. Redeploy the project
+
+> **Note:** The SQL in `functions/api/v1/all.js` uses `SELECT * FROM products` and `SELECT * FROM youtube_videos`. If the table or column names in your D1 database differ, update the SQL to match.
+
+### 3. Configure custom domain
+
+In your Pages project dashboard:
+
+1. Go to **Settings → Custom domains**
+2. Add `riyasrisilks.in` as a custom domain
+3. Cloudflare will automatically add DNS records
+
+### 4. Verify
+
+- **Frontend:** `https://riyasrisilks.in` — loads the Ember storefront
+- **API:** `https://riyasrisilks.in/api/v1/all` — returns product + video JSON from D1
+- **Admin app:** `https://admin.riyasrisilks.in` — stays separate, unchanged
 
 ## Browser Support
 
