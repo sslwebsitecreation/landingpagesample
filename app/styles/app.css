@@ -773,7 +773,7 @@ body {
   display: flex;
   gap: 28px;
   padding: 10px 0;
-  animation: glideInfinite 80s linear infinite;
+  animation: glideInfinite 20s linear infinite;
   width: max-content;
 }
 .carousel-wrapper:hover .carousel-track { animation-play-state: paused; }

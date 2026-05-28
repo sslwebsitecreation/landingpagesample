@@ -49,7 +49,7 @@ npm start          # ember serve → http://localhost:4200
 | `npm run lint` | Run all linters |
 | `npm run lint:fix` | Auto-fix lint issues |
 | `npm test` | Run linters + tests |
-| `npm run deploy` | Build + deploy to GitHub Pages |
+| `npm run build`  | Production build to `dist/` (output for Cloudflare Pages) |
 
 ## Architecture
 
@@ -126,13 +126,48 @@ app/
 └── templates/        # Route templates
 ```
 
-## Deployment
+## Deployment (Cloudflare Pages)
 
-```bash
-npm run deploy
-```
+This app is ready to deploy to Cloudflare Pages at your custom domain (`riyasrisilks.in`).
 
-Builds with `--environment=production` and publishes to GitHub Pages. The app serves from `/landingpagesample/` (configured in `config/environment.js`).
+### 1. Create a Cloudflare Pages project
+
+Connect your Git repository to Cloudflare Pages:
+
+| Setting | Value |
+|---------|-------|
+| Build command | `npm run build` |
+| Build output directory | `dist/` |
+
+History routing (`/collections` instead of `/#/collections`) is used for clean URLs. The `public/_redirects` file tells Cloudflare to serve `index.html` for all paths (SPA fallback).
+
+### 2. Bind D1 database
+
+The API endpoint (`/api/v1/all`) is served by a **Pages Function** at `functions/api/v1/all.js` which queries D1 directly — no separate server, no CORS needed.
+
+In your Pages project dashboard:
+
+1. Go to **Settings → Functions → D1 Database Bindings**
+2. Add a binding:
+   - **Variable name:** `DB`
+   - **Database:** `dddyetr`
+3. Redeploy the project
+
+> **Note:** The SQL in `functions/api/v1/all.js` uses `SELECT * FROM products` and `SELECT * FROM youtube_videos`. If the table or column names in your D1 database differ, update the SQL to match.
+
+### 3. Configure custom domain
+
+In your Pages project dashboard:
+
+1. Go to **Settings → Custom domains**
+2. Add `riyasrisilks.in` as a custom domain
+3. Cloudflare will automatically add DNS records
+
+### 4. Verify
+
+- **Frontend:** `https://riyasrisilks.in` — loads the Ember storefront
+- **API:** `https://riyasrisilks.in/api/v1/all` — returns product + video JSON from D1
+- **Admin app:** `https://admin.riyasrisilks.in` — stays separate, unchanged
 
 ## Browser Support
 
