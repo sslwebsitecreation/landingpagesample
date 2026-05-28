@@ -12,6 +12,6 @@ export default class LoadingService extends Service {
 
   @action
   stopLoading() {
-    this.isLoading = false;
+    this.isAppLoading = false;
   }
 }
