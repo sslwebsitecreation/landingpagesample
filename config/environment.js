@@ -5,7 +5,7 @@ module.exports = function (environment) {
     modulePrefix: 'dummysri',
     environment,
     rootURL: '/',
-    locationType: 'hash',
+    locationType: 'history',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
@@ -20,7 +20,7 @@ module.exports = function (environment) {
     APP: {
       buildStamp: Date.now(),
       apiBaseUrl: '/api/v1',
-      imageCdnUrl: 'https://images.abc.in',
+      imageCdnUrl: 'https://images.riyasrisilks.in',
     },
   };
 
