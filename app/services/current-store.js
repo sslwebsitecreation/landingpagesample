@@ -9,6 +9,7 @@ const WHATSAPP_MESSAGE =
 
 export default class CurrentStoreService extends Service {
   @service cache;
+  @service loading;
 
   @tracked products = [];
   @tracked categories = [];
@@ -23,6 +24,7 @@ export default class CurrentStoreService extends Service {
   CACHE_TTL = 90;
 
   async fetchStoreData() {
+    this.loading.startLoading();
     if (this.cache.isCacheValid(this.CACHE_TTL)) {
       try {
         const cached = await this.cache.loadCatalog();
@@ -45,6 +47,8 @@ export default class CurrentStoreService extends Service {
         return;
       }
       throw new Error('Failed to fetch data and no cache available');
+    } finally {
+      this.loading.stopLoading();
     }
   }
 

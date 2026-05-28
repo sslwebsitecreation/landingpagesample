@@ -3,11 +3,11 @@ import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 
 export default class LoadingService extends Service {
-  @tracked isLoading = false;
+  @tracked isAppLoading = false;
 
   @action
   startLoading() {
-    this.isLoading = true;
+    this.isAppLoading = true;
   }
 
   @action
