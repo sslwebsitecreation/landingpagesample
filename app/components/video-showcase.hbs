@@ -1,102 +1,220 @@
-<section class="video-studio-section" {{scroll-reveal delay=100}}>
-  <div class="studio-container">
+<section class="ls-section" {{scroll-reveal delay=100}}>
+  <div class="ls-container">
 
-    <div class="studio-intro">
-      <div class="intro-left">
-        <span class="section-eyebrow">Behind the Loom</span>
-        <h2 class="studio-title">Riya Sri Silks <span>Live Studio</span></h2>
-        <p class="studio-subtitle">Curated Replays & Shoppable Moments</p>
-        <p class="studio-description">Watch our latest showcases and discover the stories woven into every thread.</p>
-      </div>
+    {{!-- Decorative floral overlays --}}
+    <div class="ls-floral ls-floral--tl" aria-hidden="true"></div>
+    <div class="ls-floral ls-floral--br" aria-hidden="true"></div>
 
-      <div class="channel-action">
-        <a href="https://www.youtube.com/@riyasrisilk" target="_blank" rel="noopener noreferrer" class="youtube-channel-btn">
-          <span class="yt-icon">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"></path></svg>
-          </span>
-          <div class="btn-text">
-            <small>SUBSCRIBE ON</small>
-            <span>YouTube</span>
-          </div>
-        </a>
+    {{!-- ===== TOP HEADER ===== --}}
+    <div class="ls-header">
+      <div class="ls-eyebrow-row">
+        <span class="ls-eyebrow-icon">✦</span>
+        <span class="ls-eyebrow">Live Studio</span>
+        <span class="ls-eyebrow-icon">✦</span>
       </div>
+      <h2 class="ls-title">Riyasri Silks <span class="ls-title-accent">Live Studio</span></h2>
+      <p class="ls-subtitle">Watch our live sessions and shop the sarees featured in the video.</p>
+      <div class="ls-divider" aria-hidden="true"></div>
     </div>
 
-    {{#if this.currentStore.youtubeVideos.length}}
-      <div class="video-selector-reel">
-        {{#each this.currentStore.youtubeVideos as |video|}}
-          <button type="button"
-            class="video-card-mini {{if (equal video.id this.selectedVideo.id) 'is-active'}}"
-            {{on "click" (fn this.selectVideo video)}}>
-            <div class="mini-thumb">
-              <img src={{video.thumb}} alt={{video.title}} loading="lazy" width="140" height="79">
-              <div class="play-overlay"><span>▶</span></div>
+    {{#if this.videos.length}}
+
+      {{!-- ===== LIVE COLLECTIONS CAROUSEL ===== --}}
+      <div class="ls-carousel-wrap">
+        <div class="ls-carousel-header">
+          <h3 class="ls-carousel-title">Live Collections</h3>
+          {{#if this.hasMultiple}}
+            <div class="ls-carousel-arrows">
+              <button type="button" class="ls-arrow ls-arrow--prev" {{on "click" this.prevVideo}} aria-label="Previous video">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button type="button" class="ls-arrow ls-arrow--next" {{on "click" this.nextVideo}} aria-label="Next video">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
             </div>
-            <div class="mini-meta">
-              <span class="v-name">{{video.title}}</span>
-              <span class="v-date">{{video.description}}</span>
-            </div>
-          </button>
-        {{/each}}
+          {{/if}}
+        </div>
+        <div class="ls-carousel-track">
+          {{#each this.videos as |video index|}}
+            <button
+              type="button"
+              class="ls-video-card {{if (equal this.activeIndex index) 'is-active'}}"
+              {{on "click" (fn this.selectVideo index)}}
+            >
+              <div class="ls-video-thumb">
+                <iframe
+                  src="https://www.youtube.com/embed/{{video.youtubeId}}?autoplay=0&controls=0&modestbranding=1&rel=0&showinfo=0"
+                  title={{video.title}}
+                  loading="lazy"
+                  width="320"
+                  height="180"
+                ></iframe>
+                <div class="ls-thumb-overlay">
+                  <div class="ls-play-icon">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19"/></svg>
+                  </div>
+                </div>
+                <span class="ls-duration-badge">2:30</span>
+                {{#if (equal this.activeIndex index)}}
+                  <span class="ls-live-badge">LIVE</span>
+                {{/if}}
+              </div>
+              <div class="ls-video-meta">
+                <span class="ls-video-title">{{video.title}}</span>
+                <div class="ls-video-info">
+                  <span class="ls-saree-count">{{video.featuredSarees.length}} Sarees</span>
+                  <span class="ls-video-date">{{video.date}}</span>
+                </div>
+              </div>
+            </button>
+          {{/each}}
+        </div>
       </div>
 
-      {{#if this.selectedVideo}}
-        <div class="stage-3d-perspective {{if this.isVisible 'is-active'}}">
-          <div class="stage-container">
-            <button type="button" class="close-studio-btn" {{on "click" this.closeStudio}}>✕ Close</button>
-            <div class="stage-layout">
-
-              <div class="main-player">
-                <div class="video-frame-3d">
-                  <iframe src="https://www.youtube.com/embed/{{this.selectedVideo.youtubeId}}?autoplay=0&rel=0&showinfo=0"
-                    frameborder="0" allowfullscreen title="riya sri silks video"></iframe>
-                </div>
-                <div class="player-info">
-                  <div class="info-meta">
-                    <span class="live-tag">Studio Exclusive</span>
-                    <span class="player-date">• {{this.selectedVideo.title}}</span>
-                  </div>
-                  <h3>{{this.selectedVideo.description}}</h3>
-                </div>
+      {{!-- ===== MAIN CONTENT ===== --}}
+      <div class="ls-main-layout">
+        {{!-- LEFT: Active Video Player --}}
+        <div class="ls-player-panel">
+          <div class="ls-player-card">
+            <div class="ls-player-badge">LIVE REPLAY</div>
+            <div class="ls-player-frame">
+              <iframe
+                src="https://www.youtube.com/embed/{{this.activeVideo.youtubeId}}?autoplay=0&rel=0&showinfo=0"
+                frameborder="0"
+                allowfullscreen
+                title={{this.activeVideo.title}}
+              ></iframe>
+            </div>
+            <div class="ls-player-info {{if this.isTransitioning 'is-fading'}}">
+              <h3 class="ls-player-title">{{this.activeVideo.title}}</h3>
+              <div class="ls-player-date-row">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <span>{{this.activeVideo.date}}</span>
               </div>
-
-              <div class="product-sidebar">
-                <div class="sidebar-header">
-                  <span class="eyebrow">The Collection</span>
-                  <h4 class="title">Shop the <span>Look</span></h4>
-                </div>
-
-                <div class="sidebar-scroll">
-                  {{#each this.selectedVideo.featuredSarees as |product|}}
-                    <LinkTo @route="product" @model={{product.id}} class="saree-horizontal-card">
-                      <div class="card-thumb">
-                        <img src={{product.variants.[0].image}} alt={{product.name}} loading="lazy" width="72" height="96">
-                        <button type="button" class="mini-add-btn" {{on "click" (fn this.addToCart product)}} aria-label="Add to tray">+</button>
-                      </div>
-
-                      <div class="card-info">
-                        <h5 class="product-name">{{product.name}}</h5>
-                        <div class="card-meta">
-                          <span class="product-price">₹{{product.price}}</span>
-                          <span class="shop-label">Shop Now →</span>
-                        </div>
-                      </div>
-                    </LinkTo>
-                  {{/each}}
-                </div>
-              </div>
-
             </div>
           </div>
         </div>
-      {{/if}}
+
+        {{!-- RIGHT: Featured Sarees Panel --}}
+        <div class="ls-sarees-panel">
+          <div class="ls-sarees-header">
+            <span class="ls-sarees-heading">Sarees Featured in This Live</span>
+            <span class="ls-sarees-count">{{this.sareeCount}}</span>
+          </div>
+
+          {{#if this.activeVideo.featuredSarees.length}}
+            <div class="ls-sarees-list">
+              {{#each this.activeVideo.featuredSarees as |saree|}}
+                <LinkTo @route="product" @model={{saree.id}} class="ls-saree-item">
+                  <div class="ls-saree-thumb">
+                    <img src={{saree.variants.[0].image}} alt={{saree.name}} loading="lazy" width="64" height="85">
+                  </div>
+                  <div class="ls-saree-info">
+                    <span class="ls-saree-name">{{saree.name}}</span>
+                    <span class="ls-saree-color">{{saree.fabric}}</span>
+                  </div>
+                  <div class="ls-saree-right">
+                    <span class="ls-saree-price">₹{{saree.price}}</span>
+                    <button type="button" class="ls-cart-btn" {{on "click" (fn this.addToCart saree)}} aria-label="Add to cart">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                    </button>
+                  </div>
+                </LinkTo>
+              {{/each}}
+            </div>
+          {{else}}
+            <div class="ls-sarees-empty">
+              <p>No sarees currently featured for this live session.</p>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+
+      {{!-- ===== MOBILE SAREE ROW (visible mobile only) ===== --}}
+      <div class="ls-mobile-sarees">
+        <div class="ls-mobile-sarees-header">
+          <span class="ls-sarees-heading">Sarees in This Live</span>
+          <span class="ls-sarees-count">{{this.sareeCount}}</span>
+        </div>
+        <div class="ls-mobile-sarees-track">
+          {{#each this.activeVideo.featuredSarees as |saree|}}
+            <LinkTo @route="product" @model={{saree.id}} class="ls-mobile-saree-card">
+              <div class="ls-mob-saree-thumb">
+                <img src={{saree.variants.[0].image}} alt={{saree.name}} loading="lazy" width="64" height="85">
+              </div>
+              <div class="ls-mob-saree-info">
+                <span class="ls-mob-saree-name">{{saree.name}}</span>
+                <span class="ls-mob-saree-price">₹{{saree.price}}</span>
+              </div>
+              <button type="button" class="ls-mob-cart-btn" {{on "click" (fn this.addToCart saree)}} aria-label="Add to cart">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+              </button>
+            </LinkTo>
+          {{/each}}
+        </div>
+      </div>
+
+      <div class="ls-yt-row">
+        <a href="https://www.youtube.com/@riyasrisilk" target="_blank" rel="noopener noreferrer" class="ls-yt-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="8 5 19 12 8 19"/></svg>
+          Visit Our YouTube Channel
+        </a>
+      </div>
+
+      {{!-- ===== BOTTOM FEATURES BAR ===== --}}
+      <div class="ls-features-bar">
+        <div class="ls-feature-block">
+          <div class="ls-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="ls-feature-text">
+            <span class="ls-feature-title">Curated Live Collections</span>
+            <span class="ls-feature-sub">Handpicked just for you</span>
+          </div>
+        </div>
+        <div class="ls-feature-block">
+          <div class="ls-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+          </div>
+          <div class="ls-feature-text">
+            <span class="ls-feature-title">Secure & Easy Payments</span>
+            <span class="ls-feature-sub">100% safe checkout</span>
+          </div>
+        </div>
+        <div class="ls-feature-block">
+          <div class="ls-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="ls-feature-text">
+            <span class="ls-feature-title">Free Shipping</span>
+            <span class="ls-feature-sub">On all prepaid orders</span>
+          </div>
+        </div>
+        <div class="ls-feature-block">
+          <div class="ls-feature-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <div class="ls-feature-text">
+            <span class="ls-feature-title">Easy Returns</span>
+            <span class="ls-feature-sub">7-day exchange policy</span>
+          </div>
+        </div>
+      </div>
+
     {{else}}
-      <div class="empty-studio-placeholder">
-        <span class="silk-emoji">✨</span>
-        <h3>Studio Premiere Coming Soon</h3>
-        <p>We're digitizing our latest collection showcases. Stay tuned for an immersive shopping experience.</p>
-        <a href="https://youtube.com/@dummysri" class="big-youtube-push">Explore Our Channel</a>
+      {{!-- Empty State --}}
+      <div class="ls-empty">
+        <div class="ls-empty-icon">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <h3 class="ls-empty-title">Live Studio Coming Soon</h3>
+        <p class="ls-empty-sub">We're curating our latest collection showcases. Stay tuned for an immersive shopping experience.</p>
+        <a href="https://youtube.com/@dummysri" target="_blank" rel="noopener noreferrer" class="ls-empty-cta">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          Explore Our Channel
+        </a>
       </div>
     {{/if}}
+
   </div>
 </section>

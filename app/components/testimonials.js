@@ -5,39 +5,35 @@ import { action } from '@ember/object';
 const testimonialsData = [
   {
     id: 1,
-    name: 'Priya Sharma',
-    location: 'Mumbai',
+    name: 'Lakshmi',
+    location: 'Coimbatore',
     rating: 5,
-    text: 'The silk quality is extraordinary. My Kanjeevaram arrived beautifully packaged and the colors are even more vibrant in person. A truly premium experience.',
-    avatar:
-      'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop&crop=face',
+    text: 'I ordered Kanjeevaram for my daughter wedding. Quality is very good. All my relatives asked where I bought. Definitely I will order again.',
+    avatar: '/images/review1.jpg',
   },
   {
     id: 2,
-    name: 'Anita Reddy',
-    location: 'Bangalore',
+    name: 'Sundari',
+    location: 'Madurai',
     rating: 5,
-    text: 'I ordered a Banarasi for my wedding and it exceeded all expectations. The craftsmanship and attention to detail is remarkable. Will definitely be ordering again.',
-    avatar:
-      'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+    text: 'I bought Banarasi saree for Diwali. Wonderful product. Colour exactly matching the photo. My husband also liked it very much. Thank you Riya Silks.',
+    avatar: '/images/review2.jpg',
   },
   {
     id: 3,
-    name: 'Deepa Krishnan',
+    name: 'Meenakshi',
     location: 'Chennai',
-    rating: 4,
-    text: "Beautiful Patola saree with intricate weaving. The customer service team helped me choose the perfect piece for my mother's anniversary. Highly recommended.",
-    avatar:
-      'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=face',
+    rating: 5,
+    text: 'The Patola saree I ordered for my mother anniversary is so beautiful. Weight also perfect. Very happy with the purchase.',
+    avatar: '/images/review3.jpg',
   },
   {
     id: 4,
-    name: 'Meera Patel',
-    location: 'Delhi',
+    name: 'Rajeshwari',
+    location: 'Trichy',
     rating: 5,
-    text: 'The linen collection is perfect for everyday elegance. Light, breathable, and the prints are so elegant. My go-to store for quality sarees now.',
-    avatar:
-      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face',
+    text: 'First time ordering saree online. I was little nervous but when I opened the parcel I was very happy. Linen saree is very comfortable. Surely I will buy more.',
+    avatar: '/images/review4.jpg',
   },
 ];
 

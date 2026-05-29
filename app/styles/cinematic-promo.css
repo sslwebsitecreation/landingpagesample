@@ -67,10 +67,10 @@
 
 .label {
   font-size: 0.7rem;
-  letter-spacing: 4px;
+  letter-spacing: 5px;
   text-transform: uppercase;
   color: var(--orange);
-  font-weight: 800;
+  font-weight: var(--weight-semibold);
   display: block;
   margin-bottom: 16px;
 }
@@ -78,9 +78,11 @@
 .title {
   font-family: 'Playfair Display', serif;
   font-size: clamp(2.5rem, 6vw, 4.5rem);
-  line-height: 1.1;
+  line-height: var(--leading-snug);
   margin: 0;
   color: #1a1a1a;
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
 }
 
 .price-feature {
@@ -90,15 +92,15 @@
   align-items: center;
 }
 
-.save-up { font-size: 0.75rem; letter-spacing: 2px; color: #888; font-weight: 600; }
-.digit { font-size: 6.5rem; font-weight: 800; line-height: 1; color: var(--orange); }
-.symbol { font-size: 2rem; vertical-align: top; color: #1a1a1a; font-weight: 700; }
+.save-up { font-size: 0.75rem; letter-spacing: 2px; color: #888; font-weight: var(--weight-medium); }
+.digit { font-size: 6.5rem; font-weight: var(--weight-bold); line-height: 1; color: var(--orange); letter-spacing: -0.03em; }
+.symbol { font-size: 2rem; vertical-align: top; color: #1a1a1a; font-weight: var(--weight-semibold); }
 
 .desc {
   font-size: 1rem;
   color: #666;
   margin: 0 0 30px;
-  line-height: 1.6;
+  line-height: var(--leading-loose);
 }
 
 .luxury-cta-light {
@@ -107,9 +109,9 @@
   background: #1a1a1a;
   color: #fff;
   text-decoration: none;
-  font-weight: 800;
+  font-weight: var(--weight-bold);
   text-transform: uppercase;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   font-size: 0.75rem;
   border-radius: 100px;
   transition: all 0.3s ease;

@@ -4,61 +4,68 @@ import { action } from '@ember/object';
 import { inject as service } from '@ember/service';
 import { next, later } from '@ember/runloop';
 
-export default class VideoStudioComponent extends Component {
+export default class VideoShowcaseComponent extends Component {
   @service currentStore;
   @service toast;
-  @tracked selectedVideo = null;
-  @tracked isVisible = false;
+
+  @tracked activeIndex = 0;
+  @tracked isTransitioning = false;
 
   constructor() {
     super(...arguments);
-    next(this, this.autoOpenFirst);
+    next(this, this.autoSelectFirst);
   }
 
-  autoOpenFirst() {
-    const videos = this.currentStore.youtubeVideos;
-    if (videos && videos.length > 0) {
-      this.selectedVideo = videos[0];
-      later(this, this.triggerEntrance, 100);
-    }
+  autoSelectFirst() {
+    this.activeIndex = 0;
   }
 
-  @action
-  selectVideo(video) {
-    if (this.selectedVideo?.id === video.id) return;
-
-    if (this.selectedVideo) {
-      this.isVisible = false;
-      later(
-        this,
-        () => {
-          this.selectedVideo = video;
-          this.triggerEntrance();
-        },
-        400
-      );
-    } else {
-      this.selectedVideo = video;
-      this.triggerEntrance();
-    }
+  get videos() {
+    return this.currentStore.youtubeVideos || [];
   }
 
-  triggerEntrance() {
-    next(() => {
-      this.isVisible = true;
-    });
+  get activeVideo() {
+    return this.videos[this.activeIndex];
+  }
+
+  get sareeCount() {
+    return this.activeVideo?.featuredSarees?.length || 0;
+  }
+
+  get hasMultiple() {
+    return this.videos.length > 1;
   }
 
   @action
-  closeStudio() {
-    this.isVisible = false;
-    this.selectedVideo = null;
+  selectVideo(index) {
+    if (this.activeIndex === index) return;
+    this.isTransitioning = true;
+    later(this, () => {
+      this.activeIndex = index;
+      later(this, () => {
+        this.isTransitioning = false;
+      }, 50);
+    }, 300);
+  }
+
+  @action
+  nextVideo() {
+    const next = (this.activeIndex + 1) % this.videos.length;
+    this.selectVideo(next);
+  }
+
+  @action
+  prevVideo() {
+    const prev = (this.activeIndex - 1 + this.videos.length) % this.videos.length;
+    this.selectVideo(prev);
   }
 
   @action
   addToCart(product, event) {
-    event.preventDefault();
-    event.stopPropagation();
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
     const existing = this.currentStore.cartItems.find(
       (item) => item.id === product.id
     );
@@ -76,7 +83,12 @@ export default class VideoStudioComponent extends Component {
         quantity: 1,
       };
       this.currentStore.cartItems = [...this.currentStore.cartItems, cartItem];
-      this.toast.show('Selected saree added', 'success');
+      this.toast.show('Added to cart', 'success');
     }
+  }
+
+  @action
+  stopPropagation(e) {
+    e.stopPropagation();
   }
 }

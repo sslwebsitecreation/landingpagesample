@@ -1,6 +1,6 @@
-# Riya Sri Silks — Saree Showcase
+# Riyasri Silks — Saree Showcase
 
-A mobile-first Ember.js application showcasing handloom and powerloom sarees from Riya Sri Silks. Features an interactive product catalog, video showcase studio, WhatsApp-based ordering, and local-first caching with IndexedDB.
+A mobile-first Ember.js application showcasing handloom and powerloom sarees from Riyasri Silks. Features an interactive product catalog, video showcase studio, WhatsApp-based ordering, and local-first caching with IndexedDB.
 
 ## Features
 
