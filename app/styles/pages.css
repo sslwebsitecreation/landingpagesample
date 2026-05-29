@@ -26,9 +26,9 @@
 .page-eyebrow {
   font-size: 0.65rem;
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 4px;
   color: var(--orange);
-  font-weight: 800;
+  font-weight: var(--weight-semibold);
   display: block;
   margin-bottom: 12px;
 }
@@ -38,7 +38,9 @@
   font-size: 2.8rem;
   color: #1a1a1a;
   margin: 0 0 16px;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
+  line-height: var(--leading-snug);
 }
 
 .page-header h1 span {
@@ -50,7 +52,7 @@
   font-size: 1rem;
   color: #888;
   margin: 0;
-  line-height: 1.6;
+  line-height: var(--leading-loose);
 }
 
 .page-content {
@@ -77,9 +79,25 @@
   font-size: 1.3rem;
   color: #1a1a1a;
   margin: 0 0 14px;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   padding-bottom: 10px;
   border-bottom: 2px solid rgba(255, 102, 0, 0.12);
+}
+
+.policy-section p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: var(--leading-loose);
+  margin: 0 0 12px;
+}
+
+.policy-section ul li {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: var(--leading-loose);
+  margin-bottom: 8px;
+  position: relative;
+  padding-left: 16px;
 }
 
 .policy-section p {
@@ -118,12 +136,13 @@
 
 .policy-section ul li strong {
   color: #1a1a1a;
+  font-weight: var(--weight-semibold);
 }
 
 .policy-section a {
   color: var(--orange);
   text-decoration: none;
-  font-weight: 600;
+  font-weight: var(--weight-medium);
   transition: opacity 0.2s ease;
 }
 .policy-section a:hover { opacity: 0.7; }
@@ -149,13 +168,14 @@
   font-size: 2rem;
   color: #1a1a1a;
   margin: 0 0 20px;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.02em;
 }
 
 .about-text p {
   font-size: 1rem;
   color: #555;
-  line-height: 1.8;
+  line-height: var(--leading-loose);
   margin: 0;
 }
 
@@ -233,13 +253,13 @@
   font-size: 1.2rem;
   color: #1a1a1a;
   margin: 0 0 10px;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
 }
 
 .about-block-text p {
   font-size: 0.95rem;
   color: #666;
-  line-height: 1.75;
+  line-height: var(--leading-loose);
   margin: 0;
 }
 
@@ -278,17 +298,18 @@
   font-size: 1.3rem;
   color: #1a1a1a;
   margin: 0 0 20px;
+  font-weight: var(--weight-semibold);
 }
 
 .address-line {
   font-size: 0.9rem;
   color: #555;
   margin: 0;
-  line-height: 1.6;
+  line-height: var(--leading-loose);
 }
 
 .address-line:first-of-type {
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: #1a1a1a;
 }
 

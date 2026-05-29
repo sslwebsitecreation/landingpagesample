@@ -36,6 +36,11 @@ export default class ProductDetailsController extends Controller {
   }
 
   @action
+  stopPropagation(event) {
+    event.stopPropagation();
+  }
+
+  @action
   addToCart(event) {
     if (event) {
       event.preventDefault();
@@ -77,12 +82,12 @@ export default class ProductDetailsController extends Controller {
     const variant = this.activeVariant || product.variants[0];
     const productLink = `${window.location.origin}/product/${product.id}`;
 
-    let message = `Hello Riya Sri Silks, I'm inquiring about:%0A%0A`;
+    let message = `Hello Riyasri Silks, I'm inquiring about:%0A%0A`;
     message += `*Product:* ${product.name}%0A`;
     message += `*Variant:* ${variant.name}%0A`;
     message += `*Price:* ₹${product.price}%0A`;
     message += `*Link:* ${productLink}`;
 
-    window.open(`https://wa.me/919876543210?text=${message}`, '_blank');
+    window.open(`https://wa.me/${this.currentStore.whatsappNumber}?text=${message}`, '_blank');
   }
 }

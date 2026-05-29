@@ -3,9 +3,9 @@ import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
 import ENV from 'dummysri/config/environment';
 
-const WHATSAPP_NUMBER = '919876543210';
+const WHATSAPP_NUMBER = '9244443777';
 const WHATSAPP_MESSAGE =
-  'Hello Riya Sri Silks, shown your sarees in your website store, I am interested in purchasing. Please share more details.';
+  'Hello Riyasri Silks, shown your sarees in your website store, I am interested in purchasing. Please share more details.';
 
 export default class CurrentStoreService extends Service {
   @service cache;
@@ -22,31 +22,34 @@ export default class CurrentStoreService extends Service {
   _fetching = null;
 
   CACHE_TTL = 90;
+  whatsappNumber = WHATSAPP_NUMBER;
 
   async fetchStoreData() {
     this.loading.startLoading();
-    if (this.cache.isCacheValid(this.CACHE_TTL)) {
+    try {
+      if (this.cache.isCacheValid(this.CACHE_TTL)) {
+        try {
+          const cached = await this.cache.loadCatalog();
+          if (cached && cached.products.length) {
+            this._hydrate(cached);
+            return;
+          }
+        } catch {
+          await this.cache.clearCatalog();
+        }
+      } else {
+        this.cache.invalidateCache();
+      }
       try {
-        const cached = await this.cache.loadCatalog();
+        return await this._fullFetch();
+      } catch {
+        const cached = await this.cache.loadCatalog().catch(() => null);
         if (cached && cached.products.length) {
           this._hydrate(cached);
           return;
         }
-      } catch {
-        await this.cache.clearCatalog();
+        throw new Error('Failed to fetch data and no cache available');
       }
-    } else {
-      this.cache.invalidateCache();
-    }
-    try {
-      return await this._fullFetch();
-    } catch {
-      const cached = await this.cache.loadCatalog().catch(() => null);
-      if (cached && cached.products.length) {
-        this._hydrate(cached);
-        return;
-      }
-      throw new Error('Failed to fetch data and no cache available');
     } finally {
       this.loading.stopLoading();
     }
@@ -199,9 +202,6 @@ export default class CurrentStoreService extends Service {
             year: 'numeric',
           })
         : '',
-      thumb: v.link
-        ? `https://img.youtube.com/vi/${v.link}/hqdefault.jpg`
-        : '',
       product_ids: v.product_ids
         ? String(v.product_ids)
             .split(',')
@@ -229,7 +229,7 @@ export default class CurrentStoreService extends Service {
     return videos;
   }
   get whatsappLink() {
-    return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+    return `https://wa.me/${this.whatsappNumber}?text=${encodeURIComponent(
       WHATSAPP_MESSAGE
     )}`;
   }

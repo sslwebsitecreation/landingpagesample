@@ -1,0 +1,161 @@
+<section class="hp-section" {{scroll-reveal delay=100}}>
+  <div class="hp-container">
+
+    {{!-- HEADER --}}
+    <div class="hp-header">
+      <span class="hp-eyebrow">EXCLUSIVELY FOR YOU</span>
+      <h2 class="hp-title">Client's Handpicked <span>Sarees</span></h2>
+      <p class="hp-subtitle">Curated with love, chosen by our clients.</p>
+    </div>
+
+    {{!-- DESKTOP LAYOUT --}}
+    <div class="hp-desktop-layout">
+
+      {{!-- LEFT: Selector Panel --}}
+      <div class="hp-selector">
+        <div class="hp-selector-list">
+          {{#each this.sarees as |saree index|}}
+            <button
+              type="button"
+              class="hp-selector-item {{if (equal this.activeIndex index) 'is-active'}}"
+              {{on "click" (fn this.selectSaree index)}}
+            >
+              <div class="hp-item-thumb">
+                <img src={{saree.variants.[0].image}} alt={{saree.name}} loading="lazy" width="60" height="80">
+              </div>
+              <div class="hp-item-info">
+                <span class="hp-item-name">{{saree.name}}</span>
+                <span class="hp-item-color">{{saree.fabric}}</span>
+              </div>
+              <div class="hp-item-badge">{{add index 1}}</div>
+            </button>
+          {{/each}}
+        </div>
+        <div class="hp-selector-footer">
+          <span class="hp-count-badge">{{this.sarees.length}} Handpicked Favorites</span>
+        </div>
+      </div>
+
+      {{!-- RIGHT: Preview Panel --}}
+      <div class="hp-preview">
+        {{#if this.activeSaree}}
+          <div class="hp-preview-card">
+            <div class="hp-preview-image-wrap" {{on "click" this.openPreview}} role="button" tabindex="0">
+              <img
+                src={{this.activeSaree.variants.[0].image}}
+                alt={{this.activeSaree.name}}
+                class="hp-preview-image {{if this.isTransitioning 'is-fading'}}"
+                loading="lazy"
+                width="400" height="533"
+              >
+              <div class="hp-expand-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              </div>
+              <div class="hp-preview-badge">Bestseller</div>
+              <button type="button" class="hp-wishlist-btn" aria-label="Add to wishlist" {{on "click" this.stopPropagation}}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+              </button>
+            </div>
+            <div class="hp-preview-body">
+              <h3 class="hp-preview-title {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.name}}</h3>
+              <span class="hp-preview-color {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.fabric}} Silk</span>
+              <div class="hp-feature-row">
+                <div class="hp-feature-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  <span>Premium</span>
+                </div>
+                <div class="hp-feature-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                  <span>Elegant</span>
+                </div>
+              </div>
+              <div class="hp-price-section {{if this.isTransitioning 'is-fading'}}">
+                <span class="hp-price">₹{{this.activeSaree.price}}</span>
+                {{#if this.activeSaree.oldPrice}}
+                  <span class="hp-old-price">₹{{this.activeSaree.oldPrice}}</span>
+                {{/if}}
+              </div>
+              <div class="hp-preview-footer">
+                <LinkTo @route="product" @model={{this.activeSaree.id}} class="hp-cta-btn">
+                  View Details
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </LinkTo>
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    {{!-- MOBILE STICKY PREVIEW --}}
+    <div class="hp-mobile-sticky">
+      {{#if this.activeSaree}}
+        <div class="hp-mobile-card">
+          <div class="hp-mobile-card-inner">
+            <div class="hp-mobile-image-wrap" {{on "click" this.openPreview}} role="button" tabindex="0">
+              <img
+                src={{this.activeSaree.variants.[0].image}}
+                alt={{this.activeSaree.name}}
+                class="hp-mobile-image {{if this.isTransitioning 'is-fading'}}"
+                loading="lazy"
+                width="200" height="260"
+              >
+              <div class="hp-expand-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+              </div>
+            </div>
+            <div class="hp-mobile-body">
+              <h4 class="hp-mobile-title {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.name}}</h4>
+              <span class="hp-mobile-color {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.fabric}} Silk</span>
+              <div class="hp-mobile-price-row">
+                <span class="hp-mobile-price">₹{{this.activeSaree.price}}</span>
+                {{#if this.activeSaree.oldPrice}}
+                  <span class="hp-mobile-old-price">₹{{this.activeSaree.oldPrice}}</span>
+                {{/if}}
+              </div>
+              <LinkTo @route="product" @model={{this.activeSaree.id}} class="hp-mobile-cta">
+                View Details
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </LinkTo>
+            </div>
+          </div>
+        </div>
+      {{/if}}
+    </div>
+
+    {{!-- BOTTOM FEATURES BAR --}}
+    <div class="hp-features-bar">
+      <div class="hp-feature-block">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Free Shipping</span>
+      </div>
+      <div class="hp-feature-block">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>Premium Quality</span>
+      </div>
+      <div class="hp-feature-block">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        <span>Secure Payments</span>
+      </div>
+      <div class="hp-feature-block">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+        <span>Easy Returns</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{{!-- Full-screen image preview --}}
+{{#if this.showPreview}}
+  <div class="hp-preview-overlay" {{on "click" this.closePreview}} role="presentation">
+    <button type="button" class="hp-preview-close" {{on "click" this.closePreview}} aria-label="Close preview">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+    <div class="hp-preview-content" {{on "click" this.stopPropagation}} role="presentation">
+      <img src={{this.activeSaree.variants.[0].image}} alt={{this.activeSaree.name}} class="hp-preview-full-img" />
+    </div>
+  </div>
+{{/if}}

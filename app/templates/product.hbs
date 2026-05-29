@@ -1,14 +1,18 @@
+{{page-title (concat this.product.name " — Riyasri Silks")}}
+
 <div class="luxury-page-container">
-  
+
   {{!-- SECTION 1: 3D PRODUCT VIEW --}}
   <section class="product-core-layout">
     
-    {{!-- Left Side: Floating Asset --}}
+    {{!-- Left Side: Product Image --}}
     <div class="visual-stage">
-      <div class="floating-3d-card" {{on "click" this.openModal}} {{act-as-a-button}}>
-        <img src={{this.activeVariant.image}} alt={{this.product.name}} class="product-asset" width="380" height="550">
-        <div class="glass-reflection"></div>
-        <div class="view-indicator">TAP TO ENLARGE</div>
+      <div class="product-image-wrap" {{on "click" this.openModal}} role="button" tabindex="0">
+        <img src={{this.activeVariant.image}} alt={{this.product.name}} class="product-asset">
+        <div class="img-expand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
+        </div>
+        <div class="view-indicator">Tap to enlarge</div>
       </div>
     </div>
 
@@ -100,10 +104,16 @@
   </section>
 </div>
 
-{{!-- Expand Modal --}}
+{{!-- Full-screen image preview --}}
 {{#if this.isModalOpen}}
-  <div class="modal-blur-overlay" {{on "click" this.closeModal}} {{act-as-a-button}}>
-    <button type="button" class="modal-exit" {{on "click" this.closeModal}}>✕</button>
-    <img src={{this.activeVariant.image}} class="modal-highres-img" alt="Variant" loading="lazy" width="800" height="1000">
+  <div class="pd-preview-overlay" {{on "click" this.closeModal}} role="presentation">
+    <button type="button" class="pd-preview-close" {{on "click" this.closeModal}} aria-label="Close preview">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+      </svg>
+    </button>
+    <div class="pd-preview-content" {{on "click" this.stopPropagation}} role="presentation">
+      <img src={{this.activeVariant.image}} alt={{this.product.name}} class="pd-preview-img" />
+    </div>
   </div>
 {{/if}}

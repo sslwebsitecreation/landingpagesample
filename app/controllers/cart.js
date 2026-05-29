@@ -6,8 +6,6 @@ export default class CartController extends Controller {
   @service currentStore;
   @service toast;
 
-  whatsappNumber = '919876543210';
-
   get subtotal() {
     return this.currentStore.cartItems.reduce(
       (acc, item) => acc + (parseFloat(item.price) || 0) * (item.quantity || 1),
@@ -60,7 +58,7 @@ export default class CartController extends Controller {
     const items = this.currentStore.cartItems;
     if (items.length === 0) return;
 
-    let message = `*New Order Inquiry For Riya Sri Silks*%0A%0A`;
+    let message = `*New Order Inquiry For Riyasri Silks*%0A%0A`;
 
     items.forEach((item, index) => {
       const qty = item.quantity || 1;
@@ -79,7 +77,7 @@ export default class CartController extends Controller {
     message += `*Total Estimate: ₹${this.subtotal}* (Excl. Shipping)%0A%0A`;
     message += `Is this available?`;
 
-    const whatsappUrl = `https://wa.me/${this.whatsappNumber}?text=${message}`;
+    const whatsappUrl = `https://wa.me/${this.currentStore.whatsappNumber}?text=${message}`;
     window.open(whatsappUrl, '_blank');
   }
 }
