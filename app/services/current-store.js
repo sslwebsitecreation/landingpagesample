@@ -115,27 +115,18 @@ export default class CurrentStoreService extends Service {
 
     const IMG_CDN = (ENV.APP.imageCdnUrl || '').replace(/\/+$/, '');
 
-    const CAT_IMAGES = [
-      '/images/categories/cat-01.svg',
-      '/images/categories/cat-02.svg',
-      '/images/categories/cat-03.svg',
-      '/images/categories/cat-04.svg',
-      '/images/categories/cat-05.svg',
-      '/images/categories/cat-06.svg',
-      '/images/categories/cat-07.svg',
-      '/images/categories/cat-08.svg',
-      '/images/categories/cat-09.svg',
-      '/images/categories/cat-10.svg'
-    ];
-
     const catNames = [
       ...new Set(apiProducts.map((p) => p.category).filter(Boolean)),
     ];
-    const cats = catNames.map((name, i) => ({
-      category_id: name,
-      name,
-      image: CAT_IMAGES[i % CAT_IMAGES.length],
-    }));
+    const cats = catNames.map((name) => {
+      const firstProduct = apiProducts.find((p) => p.category === name);
+      const firstKey = firstProduct?.images?.[0]?.key;
+      return {
+        category_id: name,
+        name,
+        image: firstKey && IMG_CDN ? `${IMG_CDN}/${firstKey}` : '',
+      };
+    });
 
     const allTags = new Set();
 
