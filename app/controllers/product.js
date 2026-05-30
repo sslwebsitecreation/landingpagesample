@@ -47,13 +47,14 @@ export default class ProductDetailsController extends Controller {
       event.stopPropagation();
     }
 
+    const variantId = this.activeVariant?.id;
     const existing = this.currentStore.cartItems.find(
-      (item) => item.id === this.product.id
+      (item) => item.id === this.product.id && item.selectedVariant?.id === variantId
     );
 
     if (existing) {
       this.currentStore.cartItems = this.currentStore.cartItems.map((item) => {
-        if (item.id === this.product.id) {
+        if (item.id === this.product.id && item.selectedVariant?.id === variantId) {
           return { ...item, quantity: (item.quantity || 1) + 1 };
         }
         return item;
