@@ -7,14 +7,15 @@ export default class SearchFilterModalComponent extends Component {
   @service search;
 
   @tracked categoryInputFocused = false;
-  @tracked tagInputFocused = false;
 
   @tracked localQuery = '';
   @tracked categoryQuery = '';
-  @tracked tagQuery = '';
 
   @tracked categoryBlurTimeout = null;
-  @tracked tagBlurTimeout = null;
+
+  @tracked pendingTags = [];
+  @tracked appliedTags = [];
+  @tracked isTagsOpen = false;
 
   constructor() {
     super(...arguments);
@@ -24,6 +25,9 @@ export default class SearchFilterModalComponent extends Component {
     if (this.search.selectedCategory) {
       this.categoryQuery = this.search.selectedCategory.name;
     }
+
+    this.pendingTags = [...this.search.selectedTags];
+    this.appliedTags = [...this.search.selectedTags];
   }
 
   get isMobile() {
@@ -42,18 +46,6 @@ export default class SearchFilterModalComponent extends Component {
     );
   }
 
-  get filteredTags() {
-    const query = this.tagQuery.toLowerCase().trim();
-
-    if (!query) {
-      return this.search.tags || [];
-    }
-
-    return (this.search.tags || []).filter((tag) =>
-      tag.toLowerCase().includes(query)
-    );
-  }
-
   @action
   handleSearchInput(event) {
     this.localQuery = event.target.value;
@@ -64,12 +56,6 @@ export default class SearchFilterModalComponent extends Component {
   handleCategoryInput(event) {
     this.categoryQuery = event.target.value;
     this.categoryInputFocused = true;
-  }
-
-  @action
-  handleTagInput(event) {
-    this.tagQuery = event.target.value;
-    this.tagInputFocused = true;
   }
 
   @action
@@ -101,20 +87,40 @@ export default class SearchFilterModalComponent extends Component {
   }
 
   @action
-  toggleTag(tag) {
-    this.search.toggleTag(tag);
+  toggleTagsPanel() {
+    if (!this.isTagsOpen) {
+      this.pendingTags = [...this.appliedTags];
+    }
+    this.isTagsOpen = !this.isTagsOpen;
+  }
 
-    this.tagQuery = '';
+  @action
+  toggleTag(tag) {
+    if (this.pendingTags.includes(tag)) {
+      this.pendingTags = this.pendingTags.filter((t) => t !== tag);
+    } else {
+      this.pendingTags = [...this.pendingTags, tag];
+    }
+  }
+
+  @action
+  applyTags() {
+    this.appliedTags = [...this.pendingTags];
+    this.search.selectedTags = [...this.appliedTags];
+    this.isTagsOpen = false;
   }
 
   @action
   removeTag(tag) {
-    this.search.removeTag(tag);
+    this.appliedTags = this.appliedTags.filter((t) => t !== tag);
+    this.pendingTags = [...this.appliedTags];
+    this.search.selectedTags = this.search.selectedTags.filter((t) => t !== tag);
   }
 
   @action
   performSearch() {
     this.search.query = this.localQuery;
+    this.search.selectedTags = [...this.appliedTags];
     this.search.performSearch();
 
     if (typeof this.args.onClose === 'function') {
@@ -148,21 +154,13 @@ export default class SearchFilterModalComponent extends Component {
   }
 
   @action
-  handleTagBlur() {
-    this.tagBlurTimeout = setTimeout(() => {
-      this.tagInputFocused = false;
-      this.tagBlurTimeout = null;
-    }, 150);
-  }
-
-  @action
-  handleTagFocus() {
-    if (this.tagBlurTimeout) {
-      clearTimeout(this.tagBlurTimeout);
-      this.tagBlurTimeout = null;
-    }
-
-    this.tagInputFocused = true;
+  clearAll() {
+    this.localQuery = '';
+    this.pendingTags = [];
+    this.appliedTags = [];
+    this.categoryQuery = '';
+    this.isTagsOpen = false;
+    this.search.clearAll();
   }
 
   @action

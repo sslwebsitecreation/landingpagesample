@@ -21,10 +21,10 @@
       <div class="glass-sheet">
         <div class="sheet-handle"></div>
 
-        {{!-- Blink Indicator Stock --}}
+        {{!-- Stock Count --}}
         <div class="stock-ticker">
           <span class="blink-circle {{if this.product.inStock 'online' 'offline'}}"></span>
-          {{if this.product.inStock "Heirloom in Stock" "Out of Stock"}}
+          {{if this.product.inStock (concat "In Stock (" this.product.stockCount ")") "Out of Stock"}}
         </div>
 
         <h1 class="editorial-name">{{this.product.name}}</h1>
@@ -37,12 +37,10 @@
           {{/if}}
         </div>
 
-        <div class="rating-strip">★★★★★ <span class="count">({{this.product.rating}})</span></div>
-
         {{!-- Variant Color moved BEFORE Description --}}
         {{#if this.product.variants.length}}
           <div class="color-curation">
-            <label>Select Essence</label>
+            <label>Select Colour</label>
             <div class="swatch-row">
               {{#each this.product.variants as |variant|}}
                 <button type="button" 

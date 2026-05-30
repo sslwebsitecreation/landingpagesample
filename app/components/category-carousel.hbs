@@ -8,14 +8,27 @@
         <p class="section-subtitle">Explore our handpicked categories, each showcasing the beauty of traditional weaving passed down through generations.</p>
         <div class="title-underline"></div>
       </div>
-      <button type="button" class="view-all-link" {{on "click" @onViewAll}}>
-        View All Categories
-        <span class="arrow">→</span>
-      </button>
+      <div class="header-right">
+        <button type="button" class="view-all-link" {{on "click" @onViewAll}}>
+          View All Categories
+          <span class="arrow">→</span>
+        </button>
+      </div>
     </div>
 
     <div class="carousel-wrapper">
-      <div class="carousel-track">
+      {{#if this.showArrows}}
+        <button type="button" class="carousel-arrow carousel-arrow--prev" {{on "click" this.scrollPrev}} aria-label="Previous categories">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+      {{/if}}
+      <div
+        class="carousel-track"
+        {{did-insert this.setupCarousel}}
+        {{on "scroll" this.handleInteraction}}
+        {{on "mouseenter" this.handleInteraction}}
+        {{on "touchstart" this.handleInteraction}}
+      >
         {{#each this.currentStore.categories as |cat index|}}
           <LinkTo
             @route="collections"
@@ -30,30 +43,15 @@
               <div class="orb-shadow"></div>
             </div>
             <span class="category-name">{{cat.name}}</span>
-            <span class="category-count">{{category-count cat this.currentStore.products}} pieces</span>
-          </LinkTo>
-        {{/each}}
-        {{!-- Duplicate for seamless loop --}}
-        {{#each this.currentStore.categories as |cat index|}}
-          <LinkTo
-            @route="collections"
-            @query={{hash category=cat.name page=1}}
-            class="category-card"
-            style="--item-index: {{index}}"
-            aria-hidden="true"
-            tabindex="-1"
-          >
-            <div class="card-orb">
-              <div class="orb-inner">
-                <img src={{cat.image}} alt={{cat.name}} loading="lazy" width="110" height="110">
-              </div>
-              <div class="orb-shadow"></div>
-            </div>
-            <span class="category-name">{{cat.name}}</span>
-            <span class="category-count">{{category-count cat this.currentStore.products}} pieces</span>
+            <span class="category-desc">{{category-count cat this.currentStore.products}} pieces</span>
           </LinkTo>
         {{/each}}
       </div>
+      {{#if this.showArrows}}
+        <button type="button" class="carousel-arrow carousel-arrow--next" {{on "click" this.scrollNext}} aria-label="Next categories">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </button>
+      {{/if}}
     </div>
   </div>
 </section>

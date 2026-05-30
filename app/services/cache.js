@@ -1,5 +1,5 @@
 import Service from '@ember/service';
-import ENV from 'dummysri/config/environment';
+import ENV from 'riyasrisilks/config/environment';
 
 // ─── Image Caching Strategy ────────────────────────────────────────────
 // For production, configure your CDN/origin with:
@@ -19,7 +19,7 @@ import ENV from 'dummysri/config/environment';
 // Browser HTTP cache handles the actual image binaries separately.
 // ────────────────────────────────────────────────────────────────────────
 
-const DB_NAME = 'dummysri-catalog';
+const DB_NAME = 'riyasrisilks-catalog';
 const DB_VERSION = 1;
 const STORE_NAME = 'store';
 
@@ -117,7 +117,7 @@ export default class CacheService extends Service {
 
   get version() {
     try {
-      return localStorage.getItem('dummysri-cache-v');
+      return localStorage.getItem('riyasrisilks-cache-v');
     } catch {
       return null;
     }
@@ -126,9 +126,9 @@ export default class CacheService extends Service {
   set version(val) {
     try {
       if (val) {
-        localStorage.setItem('dummysri-cache-v', val);
+        localStorage.setItem('riyasrisilks-cache-v', val);
       } else {
-        localStorage.removeItem('dummysri-cache-v');
+        localStorage.removeItem('riyasrisilks-cache-v');
       }
     } catch {
       // localStorage unavailable
@@ -142,7 +142,7 @@ export default class CacheService extends Service {
   isCacheValid(ttlMinutes = null) {
     if (this.version !== this.buildStamp) return false;
     if (ttlMinutes) {
-      const lastFetched = localStorage.getItem('dummysri-last-fetched');
+      const lastFetched = localStorage.getItem('riyasrisilks-last-fetched');
       if (!lastFetched) return false;
       const age = (Date.now() - Number(lastFetched)) / 60000;
       if (age > ttlMinutes) return false;
@@ -181,7 +181,7 @@ export default class CacheService extends Service {
       this.setItem('featuredIds', data.featuredIds || []),
     ]);
     this.version = this.buildStamp;
-    localStorage.setItem('dummysri-last-fetched', String(Date.now()));
+    localStorage.setItem('riyasrisilks-last-fetched', String(Date.now()));
   }
 
   async clearCatalog() {

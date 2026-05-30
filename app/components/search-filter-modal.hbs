@@ -41,7 +41,9 @@
 
         {{!-- Main Search --}}
         <div class="sfm-field sfm-field--search">
-          <label class="sfm-label" for="sfm-search-input">
+          <label class="sfm-label" for="sfm-search-input">Search</label>
+
+          <div class="sfm-search-wrapper">
             <svg
               class="sfm-search-icon"
               viewBox="0 0 24 24"
@@ -56,10 +58,6 @@
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
 
-            Search
-          </label>
-
-          <div class="sfm-search-wrapper">
             <input
               id="sfm-search-input"
               type="text"
@@ -166,32 +164,72 @@
         </div>
 
         {{!-- Tags --}}
-        <div class="sfm-field">
-          <label class="sfm-label" for="tags-input">
-            Tags (multiple)
+        <div class="sfm-field sfm-field--tags">
+          <label class="sfm-label">
+            Tags
           </label>
 
-          {{#if this.search.selectedTags.length}}
+          <div class="sfm-tags-dropdown">
+            <button
+              type="button"
+              class="sfm-tags-chip {{if this.appliedTags.length "sfm-tags-chip--active"}}"
+              {{on "click" this.toggleTagsPanel}}
+              aria-expanded="{{if this.isTagsOpen "true" "false"}}"
+            >
+              <span class="sfm-tags-chip-label">
+                {{if this.appliedTags.length (concat this.appliedTags.length " selected") "Select tags"}}
+              </span>
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" class="sfm-tags-chevron {{if this.isTagsOpen "sfm-tags-chevron--open"}}">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+
+            {{#if this.isTagsOpen}}
+              <div class="sfm-tags-panel">
+                <div class="sfm-tags-options">
+                  {{#each this.search.tags as |tag|}}
+                    <button
+                      type="button"
+                      class="sfm-tags-option {{if (includes tag this.pendingTags) "sfm-tags-option--selected"}}"
+                      {{on "mousedown" (fn this.toggleTag tag)}}
+                    >
+                      <div class="sfm-tags-checkbox {{if (includes tag this.pendingTags) "sfm-tags-checkbox--checked"}}">
+                        {{#if (includes tag this.pendingTags)}}
+                          <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                          </svg>
+                        {{/if}}
+                      </div>
+                      {{tag}}
+                    </button>
+                  {{/each}}
+                </div>
+                <div class="sfm-tags-footer">
+                  <button
+                    type="button"
+                    class="sfm-tags-apply"
+                    {{on "mousedown" this.applyTags}}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Apply Filter{{#if this.pendingTags.length}} ({{this.pendingTags.length}}){{/if}}
+                  </button>
+                </div>
+              </div>
+            {{/if}}
+          </div>
+
+          {{#if this.appliedTags.length}}
             <div class="sfm-tags">
-              {{#each this.search.selectedTags as |tag|}}
+              {{#each this.appliedTags as |tag|}}
                 <span class="sfm-tag">
                   {{tag}}
-
                   <button
                     type="button"
                     class="sfm-tag-remove"
                     {{on "click" (fn this.removeTag tag)}}
                     aria-label="Remove {{tag}}"
                   >
-                    <svg
-                      viewBox="0 0 24 24"
-                      width="12"
-                      height="12"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.5"
-                      stroke-linecap="round"
-                    >
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
                       <line x1="18" y1="6" x2="6" y2="18"></line>
                       <line x1="6" y1="6" x2="18" y2="18"></line>
                     </svg>
@@ -200,78 +238,6 @@
               {{/each}}
             </div>
           {{/if}}
-
-          <div class="sfm-autocomplete">
-            <input
-              id="tags-input"
-              type="text"
-              class="sfm-input"
-              placeholder="Add tags..."
-              value={{this.tagQuery}}
-              {{on "input" this.handleTagInput}}
-              {{on "focus" this.handleTagFocus}}
-              {{on "blur" this.handleTagBlur}}
-              autocomplete="off"
-            />
-
-            {{#if this.tagQuery}}
-              <button
-                type="button"
-                class="sfm-input-clear"
-                {{on "click" this.clearTagInput}}
-                aria-label="Clear tags"
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  width="16"
-                  height="16"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                >
-                  <line x1="18" y1="6" x2="6" y2="18"></line>
-                  <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-              </button>
-            {{/if}}
-
-            {{#if this.tagInputFocused}}
-              <div
-                class="sfm-dropdown sfm-dropdown--tags"
-                role="listbox"
-              >
-                {{#each this.filteredTags as |tag|}}
-                  <button
-                    type="button"
-                    role="option"
-                    aria-pressed="{{if (includes tag this.search.selectedTags) "true" "false"}}"
-                    class="sfm-dropdown-item sfm-tag-item {{if (includes tag this.search.selectedTags) "sfm-selected"}}"
-                    {{on "mousedown" (fn this.toggleTag tag)}}
-                  >
-                    <div class="sfm-checkbox {{if (includes tag this.search.selectedTags) "sfm-checkbox--checked"}}">
-                      {{#if (includes tag this.search.selectedTags)}}
-                        <svg
-                          viewBox="0 0 24 24"
-                          width="14"
-                          height="14"
-                          fill="none"
-                          stroke="currentColor"
-                          stroke-width="3"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        >
-                          <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                      {{/if}}
-                    </div>
-
-                    {{tag}}
-                  </button>
-                {{/each}}
-              </div>
-            {{/if}}
-          </div>
         </div>
       </div>
 
@@ -283,7 +249,6 @@
         >
           Clear All
         </button>
-
         <button
           type="button"
           class="sfm-search-btn"
