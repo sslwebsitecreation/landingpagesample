@@ -2,9 +2,26 @@
    SEARCH FILTER MODAL
 ========================================= */
 
-.sfm-search-wrapper,
+.sfm-search-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
 .sfm-autocomplete {
   position: relative;
+}
+
+.sfm-search-icon {
+  position: absolute;
+  left: 14px;
+  color: #999;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.sfm-input--search {
+  padding-left: 44px;
 }
 
 .sfm-input {
@@ -119,4 +136,151 @@
   width: 14px;
   height: 14px;
   pointer-events: none;
+}
+
+/* =========================================
+   TAGS DROPDOWN (collection-style)
+========================================= */
+
+.sfm-tags-dropdown {
+  position: relative;
+}
+
+.sfm-tags-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: #fff;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #999;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sfm-tags-chip:hover {
+  border-color: #ccc;
+}
+
+.sfm-tags-chip--active {
+  border-color: var(--accent-gold);
+  color: #2B2B2B;
+}
+
+.sfm-tags-chip-label {
+  flex: 1;
+  text-align: left;
+}
+
+.sfm-tags-chevron {
+  transition: transform 0.2s ease;
+  color: #999;
+  flex-shrink: 0;
+}
+
+.sfm-tags-chevron--open {
+  transform: rotate(180deg);
+}
+
+.sfm-tags-panel {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+}
+
+.sfm-tags-options {
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.sfm-tags-footer {
+  padding: 8px 8px;
+  border-top: 1px solid rgba(0,0,0,0.06);
+  flex-shrink: 0;
+}
+
+.sfm-tags-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #2B2B2B;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+}
+
+.sfm-tags-option:hover {
+  background: #f9f9f9;
+}
+
+.sfm-tags-option--selected {
+  background: #fef7ef;
+  color: var(--accent-gold);
+  font-weight: 600;
+}
+
+.sfm-tags-checkbox {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #ddd;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+
+.sfm-tags-checkbox--checked {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+}
+
+.sfm-tags-checkbox--checked svg {
+  color: white;
+}
+
+.sfm-tags-apply {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 10px;
+  background: var(--accent-gold);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sfm-tags-apply:hover {
+  background: #b4945a;
+}
+
+.sfm-tags-apply:active {
+  transform: scale(0.98);
 }

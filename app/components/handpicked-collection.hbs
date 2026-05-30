@@ -42,7 +42,7 @@
           <div class="hp-preview-card">
             <div class="hp-preview-image-wrap" {{on "click" this.openPreview}} role="button" tabindex="0">
               <img
-                src={{this.activeSaree.variants.[0].image}}
+                src={{this.activePreviewVariant.image}}
                 alt={{this.activeSaree.name}}
                 class="hp-preview-image {{if this.isTransitioning 'is-fading'}}"
                 loading="lazy"
@@ -52,31 +52,43 @@
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
               </div>
               <div class="hp-preview-badge">Bestseller</div>
-              <button type="button" class="hp-wishlist-btn" aria-label="Add to wishlist" {{on "click" this.stopPropagation}}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                </svg>
-              </button>
             </div>
             <div class="hp-preview-body">
               <h3 class="hp-preview-title {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.name}}</h3>
-              <span class="hp-preview-color {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.fabric}} Silk</span>
-              <div class="hp-feature-row">
-                <div class="hp-feature-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>Premium</span>
-                </div>
-                <div class="hp-feature-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                  <span>Elegant</span>
-                </div>
-              </div>
               <div class="hp-price-section {{if this.isTransitioning 'is-fading'}}">
                 <span class="hp-price">₹{{this.activeSaree.price}}</span>
                 {{#if this.activeSaree.oldPrice}}
                   <span class="hp-old-price">₹{{this.activeSaree.oldPrice}}</span>
+                  <span class="hp-off-badge">{{this.activeSaree.discount}}% OFF</span>
                 {{/if}}
               </div>
+              <div class="hp-meta-grid {{if this.isTransitioning 'is-fading'}}">
+                <div class="hp-meta-row">
+                  <span class="hp-meta-label">Category</span>
+                  <span class="hp-meta-value">{{this.activeSaree.category}}</span>
+                </div>
+              </div>
+              <div class="hp-meta-row">
+                <div class="hp-meta-label">Description</div>
+                <p class="hp-preview-desc {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.description}}</p>
+              </div>
+              {{#if (gt this.activeSaree.variants.length 1)}}
+                <div class="hp-meta-row">
+                  <div class="hp-meta-label">Available Colors</div>
+                  <div class="hp-variant-strip {{if this.isTransitioning 'is-fading'}}">
+                    {{#each this.activeSaree.variants as |variant vi|}}
+                      <button
+                        type="button"
+                        class="hp-variant-swatch {{if (equal this.activeVariantIndex vi) 'is-active'}}"
+                        {{on "click" (fn this.selectVariant vi)}}
+                        aria-label={{variant.name}}
+                      >
+                        <span class="hp-variant-dot" style="background-color: {{variant.hex}}"></span>
+                      </button>
+                    {{/each}}
+                  </div>
+                </div>
+              {{/if}}
               <div class="hp-preview-footer">
                 <LinkTo @route="product" @model={{this.activeSaree.id}} class="hp-cta-btn">
                   View Details
@@ -96,7 +108,7 @@
           <div class="hp-mobile-card-inner">
             <div class="hp-mobile-image-wrap" {{on "click" this.openPreview}} role="button" tabindex="0">
               <img
-                src={{this.activeSaree.variants.[0].image}}
+                src={{this.activePreviewVariant.image}}
                 alt={{this.activeSaree.name}}
                 class="hp-mobile-image {{if this.isTransitioning 'is-fading'}}"
                 loading="lazy"
@@ -108,11 +120,36 @@
             </div>
             <div class="hp-mobile-body">
               <h4 class="hp-mobile-title {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.name}}</h4>
-              <span class="hp-mobile-color {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.fabric}} Silk</span>
+              <div class="hp-meta-grid hp-meta-grid--mob {{if this.isTransitioning 'is-fading'}}">
+                <div class="hp-meta-row">
+                  <span class="hp-meta-label">Category</span>
+                  <span class="hp-meta-value">{{this.activeSaree.category}}</span>
+                </div>
+                <div class="hp-meta-row">
+                  <span class="hp-meta-label">Fabric</span>
+                  <span class="hp-meta-value">{{this.activeSaree.fabric}} Silk</span>
+                </div>
+              </div>
+              <p class="hp-mobile-desc {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.description}}</p>
+              {{#if (gt this.activeSaree.variants.length 1)}}
+                <div class="hp-mobile-variant-strip {{if this.isTransitioning 'is-fading'}}">
+                  {{#each this.activeSaree.variants as |variant vi|}}
+                    <button
+                      type="button"
+                      class="hp-variant-swatch {{if (equal this.activeVariantIndex vi) 'is-active'}}"
+                      {{on "click" (fn this.selectVariant vi)}}
+                      aria-label={{variant.name}}
+                    >
+                      <span class="hp-variant-dot" style="background-color: {{variant.hex}}"></span>
+                    </button>
+                  {{/each}}
+                </div>
+              {{/if}}
               <div class="hp-mobile-price-row">
                 <span class="hp-mobile-price">₹{{this.activeSaree.price}}</span>
                 {{#if this.activeSaree.oldPrice}}
                   <span class="hp-mobile-old-price">₹{{this.activeSaree.oldPrice}}</span>
+                  <span class="hp-off-badge">{{this.activeSaree.discount}}% OFF</span>
                 {{/if}}
               </div>
               <LinkTo @route="product" @model={{this.activeSaree.id}} class="hp-mobile-cta">
@@ -123,26 +160,6 @@
           </div>
         </div>
       {{/if}}
-    </div>
-
-    {{!-- BOTTOM FEATURES BAR --}}
-    <div class="hp-features-bar">
-      <div class="hp-feature-block">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        <span>Free Shipping</span>
-      </div>
-      <div class="hp-feature-block">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <span>Premium Quality</span>
-      </div>
-      <div class="hp-feature-block">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
-        <span>Secure Payments</span>
-      </div>
-      <div class="hp-feature-block">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-        <span>Easy Returns</span>
-      </div>
     </div>
 
   </div>

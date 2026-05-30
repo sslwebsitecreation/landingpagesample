@@ -10,6 +10,7 @@ export default class HandpickedCollectionComponent extends Component {
   @tracked activeIndex = 0;
   @tracked isTransitioning = false;
   @tracked showPreview = false;
+  @tracked activeVariantIndex = 0;
 
   get sarees() {
     return (this.currentStore.handpickedSarees || []).slice(0, 5);
@@ -19,12 +20,33 @@ export default class HandpickedCollectionComponent extends Component {
     return this.sarees[this.activeIndex];
   }
 
+  get activePreviewVariant() {
+    return this.activeSaree?.variants?.[this.activeVariantIndex] || this.activeSaree?.variants?.[0] || {};
+  }
+
   @action
   selectSaree(index) {
     if (this.activeIndex === index) return;
     this.isTransitioning = true;
+    this.activeVariantIndex = 0;
     later(this, () => {
       this.activeIndex = index;
+      later(this, () => {
+        this.isTransitioning = false;
+      }, 50);
+    }, 300);
+  }
+
+  @action
+  selectVariant(index, event) {
+    if (event) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    if (this.activeVariantIndex === index) return;
+    this.isTransitioning = true;
+    later(this, () => {
+      this.activeVariantIndex = index;
       later(this, () => {
         this.isTransitioning = false;
       }, 50);

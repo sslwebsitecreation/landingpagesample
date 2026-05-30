@@ -30,10 +30,6 @@
       </div>
 
       <div class="status-row">
-        <div class="rating">
-          <span class="star">★</span>
-          <span class="val">{{@product.rating}}</span>
-        </div>
         {{#if (equal @product.status 'in_stock')}}
           <span class="stock-text">• In Stock</span>
         {{/if}}

@@ -1,7 +1,7 @@
 import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 import { inject as service } from '@ember/service';
-import ENV from 'dummysri/config/environment';
+import ENV from 'riyasrisilks/config/environment';
 
 const WHATSAPP_NUMBER = '9244443777';
 const WHATSAPP_MESSAGE =
@@ -21,13 +21,35 @@ export default class CurrentStoreService extends Service {
 
   _fetching = null;
 
-  CACHE_TTL = 90;
   whatsappNumber = WHATSAPP_NUMBER;
+
+  _isRefreshDue() {
+    const lastFetched = localStorage.getItem('riyasrisilks-last-fetched');
+    if (!lastFetched) return true;
+
+    const lastFetch = Number(lastFetched);
+    const now = Date.now();
+    const IST_OFFSET = 5.5 * 60 * 60 * 1000;
+
+    const scheduleHours = [11, 15, 18];
+
+    for (const hour of scheduleHours) {
+      const scheduled = new Date(now + IST_OFFSET);
+      scheduled.setUTCHours(hour, 0, 0, 0);
+      const scheduledTS = scheduled.getTime() - IST_OFFSET;
+
+      if (scheduledTS > lastFetch && scheduledTS <= now) {
+        return true;
+      }
+    }
+
+    return false;
+  }
 
   async fetchStoreData() {
     this.loading.startLoading();
     try {
-      if (this.cache.isCacheValid(this.CACHE_TTL)) {
+      if (!this._isRefreshDue() && this.cache.isCacheValid()) {
         try {
           const cached = await this.cache.loadCatalog();
           if (cached && cached.products.length) {
@@ -166,6 +188,7 @@ export default class CurrentStoreService extends Service {
         oldPrice: hasDiscount ? p.original_price : null,
         discount,
         rating: '4.5',
+        stockCount: p.stock_count || 0,
         status:
           p.stock_count === 0
             ? 'out_of_stock'
@@ -175,7 +198,6 @@ export default class CurrentStoreService extends Service {
         inStock: (p.stock_count || 0) > 0,
         category: p.category || '',
         category_id: p.category || '',
-        fabric: p.category || '',
         variants,
         tags,
       };

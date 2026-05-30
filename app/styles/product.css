@@ -76,7 +76,7 @@
 }
 
 /* --- BLINK INDICATOR --- */
-.stock-ticker { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
+.stock-ticker { display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: var(--weight-bold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px; }
 
 .blink-circle { width: 10px; height: 10px; border-radius: 50%; position: relative; }
 .online { background: #22c55e; }
@@ -128,7 +128,7 @@
 .detail-row .label { font-size: 10px; font-weight: var(--weight-bold); color: #aaa; text-transform: uppercase; letter-spacing: 1.5px; display: block; margin-bottom: 6px; }
 .detail-row .value { font-size: 13px; font-weight: var(--weight-semibold); color: var(--dark); }
 .tag-cloud { display: flex; flex-wrap: wrap; gap: 6px; }
-.luxury-pill { background: #fff; border: 1px solid #eee; padding: 5px 12px; border-radius: 50px; font-size: 10px; font-weight: var(--weight-medium); color: #666; }
+.luxury-pill { background: rgba(255, 102, 0, 0.12); border: 1px solid rgba(255, 102, 0, 0.35); padding: 8px 16px; border-radius: 50px; font-size: 12px; font-weight: var(--weight-bold); color: #cc5500; }
 
 /* --- BUTTONS --- */
 .action-footer { display: flex; flex-direction: column; gap: 10px; }

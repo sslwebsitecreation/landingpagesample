@@ -35,7 +35,7 @@ A mobile-first Ember.js application showcasing handloom and powerloom sarees fro
 
 ```bash
 git clone <repo-url>
-cd dummysri
+cd riyasrisilks
 npm install
 npm start          # ember serve → http://localhost:4200
 ```

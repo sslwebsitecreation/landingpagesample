@@ -1,5 +1,5 @@
-import Application from 'dummysri/app';
-import config from 'dummysri/config/environment';
+import Application from 'riyasrisilks/app';
+import config from 'riyasrisilks/config/environment';
 import * as QUnit from 'qunit';
 import { setApplication } from '@ember/test-helpers';
 import { setup } from 'qunit-dom';

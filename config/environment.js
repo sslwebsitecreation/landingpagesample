@@ -2,7 +2,7 @@
 
 module.exports = function (environment) {
   let ENV = {
-    modulePrefix: 'dummysri',
+    modulePrefix: 'riyasrisilks',
     environment,
     rootURL: '/',
     locationType: 'history',

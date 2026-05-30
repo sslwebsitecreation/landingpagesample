@@ -12,6 +12,11 @@
 @import './toast.css';
 @import './handpicked-collection.css';
 
+/* Section separators on the home page */
+main#main-content > section + section {
+  border-top: 1px solid rgba(0,0,0,0.06);
+}
+
 :root {
   --accent-gold: #c5a059;
   --bg-main: #fcfaf8;
@@ -756,6 +761,13 @@ body {
   align-items: flex-start;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
 .section-eyebrow {
   font-size: 0.65rem;
   text-transform: uppercase;
@@ -763,6 +775,7 @@ body {
   color: var(--orange);
   font-weight: 800;
   margin-bottom: 8px;
+  display: block;
 }
 
 .section-title { font-size: 2.2rem; font-weight: var(--weight-bold); color: #1a1a1a; margin: 0; }
@@ -778,7 +791,7 @@ body {
 
 .title-underline { width: 50px; height: 3px; background: linear-gradient(90deg, var(--orange), transparent); margin-top: 14px; border-radius: 2px; }
 
-.view-all-link {
+.header-right .view-all-link {
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -797,12 +810,12 @@ body {
   transition: all 0.3s ease;
 }
 
-.view-all-link:hover {
+.header-right .view-all-link:hover {
   border-color: #F97316;
   color: #F97316;
 }
 
-.view-all-link .arrow {
+.header-right .view-all-link .arrow {
   display: inline-flex;
   animation: arrowPulse 1.5s ease-in-out infinite;
 }
@@ -815,20 +828,77 @@ body {
 /* CAROUSEL */
 .carousel-wrapper {
   width: 100%;
+  position: relative;
   overflow: hidden;
-  padding: 20px 0;
+}
+
+.carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid #FED7AA;
+  background: rgba(255, 255, 255, 0.9);
+  color: #F97316;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.carousel-arrow:hover {
+  background: #F97316;
+  color: #FFFFFF;
+  border-color: #F97316;
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.3);
+  transform: translateY(-50%) scale(1.06);
+}
+
+.carousel-arrow--prev {
+  left: 10px;
+}
+
+.carousel-arrow--next {
+  right: 10px;
+}
+
+@media (max-width: 768px) {
+  .carousel-arrow {
+    width: 32px;
+    height: 32px;
+  }
+  .carousel-arrow--prev {
+    left: 6px;
+  }
+  .carousel-arrow--next {
+    right: 6px;
+  }
 }
 
 .carousel-track {
+  flex: 1;
   display: flex;
   gap: 28px;
-  padding: 10px 0;
-  animation: glideInfinite 20s linear infinite;
-  width: max-content;
+  padding: 10px 4px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  flex-wrap: nowrap;
 }
-.carousel-wrapper:hover .carousel-track { animation-play-state: paused; }
 
-@keyframes glideInfinite { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+.carousel-track::-webkit-scrollbar {
+  display: none;
+}
+
+.category-card {
+  scroll-snap-align: start;
+}
 
 /* CATEGORY CARD */
 .category-card {
@@ -894,12 +964,16 @@ body {
 .category-name { display: block; margin-top: 16px; font-weight: var(--weight-semibold); font-size: 0.82rem; color: #1a1a1a; transition: color 0.3s ease; }
 .category-card:hover .category-name { color: #FF6600; }
 
-.category-count {
-  display: block;
+.category-desc {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
   font-size: 0.7rem;
   color: #aaa;
   margin-top: 3px;
   font-weight: var(--weight-normal);
+  line-height: 1.3;
 }
 
 @keyframes orbBob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
@@ -1018,7 +1092,6 @@ body {
   .category-card { width: 110px; }
   .card-orb, .orb-inner { width: 90px; height: 90px; }
   .category-name { font-size: 0.75rem; margin-top: 12px; }
-  .category-count { font-size: 0.65rem; }
 
   .category-modal-backdrop { padding: 16px; align-items: flex-end; }
   .category-modal {
@@ -1053,21 +1126,21 @@ body {
 }
 
 .collection-section {
-  padding: 80px 0;
+  padding: 50px 0;
   max-width: 1400px;
   margin: 0 auto;
 }
 
 .section-header-wrapper {
   text-align: center;
-  margin-bottom: 35px;
+  margin-bottom: 10px;
 }
 
 .section-header-wrapper .section-title {
   font-family: 'Playfair Display', serif;
   font-size: 2.2rem;
   color: #1a1a1a;
-  margin: 8px 0 10px;
+  margin: 4px 0 6px;
   letter-spacing: -0.02em;
 }
 
@@ -1082,14 +1155,14 @@ body {
   margin: 0;
   line-height: var(--leading-loose);
   max-width: 100%;
-  padding: 20px;
+  padding: 0 20px 6px;
 }
 
 /* --- GLIDING TABS --- */
 .tabs-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 40px;
+  margin-bottom: 28px;
 }
 
 .tab-switcher {
