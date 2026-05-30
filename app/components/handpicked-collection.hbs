@@ -120,6 +120,13 @@
             </div>
             <div class="hp-mobile-body">
               <h4 class="hp-mobile-title {{if this.isTransitioning 'is-fading'}}">{{this.activeSaree.name}}</h4>
+              <div class="hp-mobile-price-row">
+                <span class="hp-mobile-price">₹{{this.activeSaree.price}}</span>
+                {{#if this.activeSaree.oldPrice}}
+                  <span class="hp-mobile-old-price">₹{{this.activeSaree.oldPrice}}</span>
+                  <span class="hp-off-badge">{{this.activeSaree.discount}}% OFF</span>
+                {{/if}}
+              </div>
               <div class="hp-meta-grid hp-meta-grid--mob {{if this.isTransitioning 'is-fading'}}">
                 <div class="hp-meta-row">
                   <span class="hp-meta-label">Category</span>
@@ -145,13 +152,6 @@
                   {{/each}}
                 </div>
               {{/if}}
-              <div class="hp-mobile-price-row">
-                <span class="hp-mobile-price">₹{{this.activeSaree.price}}</span>
-                {{#if this.activeSaree.oldPrice}}
-                  <span class="hp-mobile-old-price">₹{{this.activeSaree.oldPrice}}</span>
-                  <span class="hp-off-badge">{{this.activeSaree.discount}}% OFF</span>
-                {{/if}}
-              </div>
               <LinkTo @route="product" @model={{this.activeSaree.id}} class="hp-mobile-cta">
                 View Details
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>

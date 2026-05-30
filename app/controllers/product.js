@@ -82,12 +82,20 @@ export default class ProductDetailsController extends Controller {
     const variant = this.activeVariant || product.variants[0];
     const productLink = `${window.location.origin}/product/${product.id}`;
 
-    let message = `Hello Riyasri Silks, I'm inquiring about:%0A%0A`;
-    message += `*Product:* ${product.name}%0A`;
-    message += `*Variant:* ${variant.name}%0A`;
-    message += `*Price:* ₹${product.price}%0A`;
-    message += `*Link:* ${productLink}`;
+    const lines = [
+      `Hello Riyasri Silks, I'm inquiring about:`,
+      ``,
+      `*Product:* ${product.name}`,
+      `*Variant:* ${variant.name}`,
+      `*Price:* ₹${product.price}`,
+      `*Link:* ${productLink}`,
+    ];
 
-    window.open(`https://wa.me/${this.currentStore.whatsappNumber}?text=${message}`, '_blank');
+    const message = lines.join('\n');
+
+    window.open(
+      `https://wa.me/${this.currentStore.whatsappNumber}?text=${encodeURIComponent(message)}`,
+      '_blank'
+    );
   }
 }
