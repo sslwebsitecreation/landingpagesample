@@ -63,7 +63,8 @@ export default class CartController extends Controller {
     items.forEach((item, index) => {
       const qty = item.quantity || 1;
       const variant = item.selectedVariant ? item.selectedVariant.name : '';
-      const productLink = `${window.location.origin}/product/${item.id}`;
+      const colorHex = item.selectedVariant?.hex ? item.selectedVariant.hex.replace('#', '') : '';
+      const productLink = `${window.location.origin}/product/${item.id}${colorHex ? `?color=${colorHex}` : ''}`;
       const lineTotal = (parseFloat(item.price) || 0) * qty;
 
       lines.push(`*${index + 1}. ${item.name}*`);
