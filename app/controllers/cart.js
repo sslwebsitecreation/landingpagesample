@@ -76,7 +76,7 @@ export default class CartController extends Controller {
       lines.push('');
     });
 
-    lines.push(`*Total Estimate: ₹${this.subtotal}* (Excl. Shipping)`);
+    lines.push(`*Total Estimate: ₹${this.subtotal}* (Exclude Shipping)`);
     lines.push('');
     lines.push('Is this available?');
 
