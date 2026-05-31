@@ -24,6 +24,10 @@ export default class HandpickedCollectionComponent extends Component {
     return this.activeSaree?.variants?.[this.activeVariantIndex] || this.activeSaree?.variants?.[0] || {};
   }
 
+  get activeColorHex() {
+    return (this.activePreviewVariant.hex || '').replace('#', '');
+  }
+
   @action
   selectSaree(index) {
     if (this.activeIndex === index) return;

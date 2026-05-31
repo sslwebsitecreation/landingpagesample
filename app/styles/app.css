@@ -1207,7 +1207,7 @@ body {
   z-index: 1;
 }
 
-.tab-glide-pill.is-special {
+.tab-glide-pill.is-Special {
   transform: translateX(100%);
 }
 
@@ -1226,6 +1226,39 @@ body {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* --- TABS EMPTY STATE --- */
+.tabs-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: #999;
+}
+
+.tabs-empty-icon {
+  margin-bottom: 16px;
+  opacity: 0.4;
+}
+
+.tabs-empty-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: #777;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.tabs-empty-sub {
+  font-size: 0.88rem;
+  color: #aaa;
+  max-width: 300px;
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* --- COLLECTION TABS FOOTER --- */

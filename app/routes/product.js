@@ -21,6 +21,17 @@ export default class ProductDetailsRoute extends Route {
 
   setupController(controller, model) {
     super.setupController(controller, model);
+    const colorParam = controller.color;
+    if (colorParam) {
+      const hex = colorParam.startsWith('#') ? colorParam : `#${colorParam}`;
+      const variant = model.product.variants.find(
+        (v) => v.hex.toUpperCase() === hex.toUpperCase()
+      );
+      if (variant) {
+        controller.activeVariant = variant;
+        return;
+      }
+    }
     controller.activeVariant = model.product.variants[0];
   }
 }

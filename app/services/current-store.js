@@ -261,7 +261,7 @@ export default class CurrentStoreService extends Service {
 
   get specialCollectionSarees() {
     return (
-      this.products?.filter((p) => p.tags?.includes('Handpicked'))?.slice(0, 16) ||
+      this.products?.filter((p) => p.tags?.includes('Special'))?.slice(0, 16) ||
       []
     );
   }
