@@ -25,12 +25,13 @@ export default class ProductCardComponent extends Component {
   addToCart(product, event) {
     event.preventDefault();
     event.stopPropagation();
+    const variantId = this.activeVariant?.id;
     const existing = this.currentStore.cartItems.find(
-      (item) => item.id === product.id
+      (item) => item.id === product.id && item.selectedVariant?.id === variantId
     );
     if (existing) {
       this.currentStore.cartItems = this.currentStore.cartItems.map((item) => {
-        if (item.id === product.id) {
+        if (item.id === product.id && item.selectedVariant?.id === variantId) {
           return { ...item, quantity: (item.quantity || 1) + 1 };
         }
         return item;

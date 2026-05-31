@@ -42,7 +42,7 @@ export default class CollectionsController extends Controller {
   }
 
   get effectivePendingCategory() {
-    return this.pendingCategory || this.category || '';
+    return this.pendingCategory;
   }
 
   get filteredProducts() {

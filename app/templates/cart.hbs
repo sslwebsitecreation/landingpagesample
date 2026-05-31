@@ -24,7 +24,7 @@
 
       {{!-- Scrollable Item List --}}
       <main class="items-column">
-        {{#each this.currentStore.cartItems key="id" as |item index|}}
+        {{#each this.currentStore.cartItems key="@index" as |item index|}}
           {{!-- template-lint-disable style-concatenation --}}
           {{!-- template-lint-disable no-inline-styles --}}
           <div class="cart-item-card" style="--delay: {{index}}">

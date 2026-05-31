@@ -66,12 +66,14 @@ export default class VideoShowcaseComponent extends Component {
       event.preventDefault();
       event.stopPropagation();
     }
+    const variant = product.variants?.[0] || {};
+    const variantId = variant.id;
     const existing = this.currentStore.cartItems.find(
-      (item) => item.id === product.id
+      (item) => item.id === product.id && item.selectedVariant?.id === variantId
     );
     if (existing) {
       this.currentStore.cartItems = this.currentStore.cartItems.map((item) => {
-        if (item.id === product.id) {
+        if (item.id === product.id && item.selectedVariant?.id === variantId) {
           return { ...item, quantity: (item.quantity || 1) + 1 };
         }
         return item;
@@ -79,7 +81,7 @@ export default class VideoShowcaseComponent extends Component {
     } else {
       const cartItem = {
         ...product,
-        selectedVariant: product.variants?.[0] || {},
+        selectedVariant: variant,
         quantity: 1,
       };
       this.currentStore.cartItems = [...this.currentStore.cartItems, cartItem];

@@ -7,8 +7,30 @@ export default class ProductDetailsController extends Controller {
   @service currentStore;
   @service toast;
 
+  queryParams = ['color'];
+
   @tracked isModalOpen = false;
   @tracked activeVariant = null;
+  @tracked _color = '';
+
+  get color() {
+    return this._color;
+  }
+
+  set color(val) {
+    this._color = val;
+    this._matchVariantFromColor();
+  }
+
+  _matchVariantFromColor() {
+    const product = this.model?.product;
+    if (!this._color || !product) return;
+    const hex = this._color.startsWith('#') ? this._color : `#${this._color}`;
+    const variant = product.variants.find(
+      (v) => v.hex.toUpperCase() === hex.toUpperCase()
+    );
+    this.activeVariant = variant || product.variants[0];
+  }
 
   get product() {
     return this.model.product;
@@ -21,6 +43,7 @@ export default class ProductDetailsController extends Controller {
   @action
   selectVariant(variant) {
     this.activeVariant = variant;
+    this.color = variant.hex.replace('#', '');
   }
 
   @action
@@ -47,13 +70,14 @@ export default class ProductDetailsController extends Controller {
       event.stopPropagation();
     }
 
+    const variantId = this.activeVariant?.id;
     const existing = this.currentStore.cartItems.find(
-      (item) => item.id === this.product.id
+      (item) => item.id === this.product.id && item.selectedVariant?.id === variantId
     );
 
     if (existing) {
       this.currentStore.cartItems = this.currentStore.cartItems.map((item) => {
-        if (item.id === this.product.id) {
+        if (item.id === this.product.id && item.selectedVariant?.id === variantId) {
           return { ...item, quantity: (item.quantity || 1) + 1 };
         }
         return item;
@@ -80,14 +104,23 @@ export default class ProductDetailsController extends Controller {
 
     const product = this.product;
     const variant = this.activeVariant || product.variants[0];
-    const productLink = `${window.location.origin}/product/${product.id}`;
+    const colorHex = variant.hex.replace('#', '');
+    const productLink = `${window.location.origin}/product/${product.id}?color=${colorHex}`;
 
-    let message = `Hello Riyasri Silks, I'm inquiring about:%0A%0A`;
-    message += `*Product:* ${product.name}%0A`;
-    message += `*Variant:* ${variant.name}%0A`;
-    message += `*Price:* ₹${product.price}%0A`;
-    message += `*Link:* ${productLink}`;
+    const lines = [
+      `Hello Riyasri Silks, I'm inquiring about:`,
+      ``,
+      `*Product:* ${product.name}`,
+      `*Variant:* ${variant.name}`,
+      `*Price:* ₹${product.price}`,
+      `*Link:* ${productLink}`,
+    ];
 
-    window.open(`https://wa.me/${this.currentStore.whatsappNumber}?text=${message}`, '_blank');
+    const message = lines.join('\n');
+
+    window.open(
+      `https://wa.me/${this.currentStore.whatsappNumber}?text=${encodeURIComponent(message)}`,
+      '_blank'
+    );
   }
 }

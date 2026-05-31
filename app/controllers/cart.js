@@ -58,26 +58,30 @@ export default class CartController extends Controller {
     const items = this.currentStore.cartItems;
     if (items.length === 0) return;
 
-    let message = `*New Order Inquiry For Riyasri Silks*%0A%0A`;
+    const lines = ['*New Order Inquiry For Riyasri Silks*', ''];
 
     items.forEach((item, index) => {
       const qty = item.quantity || 1;
       const variant = item.selectedVariant ? item.selectedVariant.name : '';
-      const productLink = `${window.location.origin}/product/${item.id}`;
+      const colorHex = item.selectedVariant?.hex ? item.selectedVariant.hex.replace('#', '') : '';
+      const productLink = `${window.location.origin}/product/${item.id}${colorHex ? `?color=${colorHex}` : ''}`;
       const lineTotal = (parseFloat(item.price) || 0) * qty;
 
-      message += `*${index + 1}. ${item.name}*%0A`;
+      lines.push(`*${index + 1}. ${item.name}*`);
       if (variant) {
-        message += `Variant: ${variant}%0A`;
+        lines.push(`Variant: ${variant}`);
       }
-      message += `Qty: ${qty} × ₹${item.price} = ₹${lineTotal}%0A`;
-      message += `Link: ${productLink}%0A%0A`;
+      lines.push(`Qty: ${qty} × ₹${item.price} = ₹${lineTotal}`);
+      lines.push(`Link: ${productLink}`);
+      lines.push('');
     });
 
-    message += `*Total Estimate: ₹${this.subtotal}* (Excl. Shipping)%0A%0A`;
-    message += `Is this available?`;
+    lines.push(`*Total Estimate: ₹${this.subtotal}* (Excl. Shipping)`);
+    lines.push('');
+    lines.push('Is this available?');
 
-    const whatsappUrl = `https://wa.me/${this.currentStore.whatsappNumber}?text=${message}`;
+    const message = lines.join('\n');
+    const whatsappUrl = `https://wa.me/${this.currentStore.whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   }
 }

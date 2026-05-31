@@ -5,10 +5,10 @@ import { inject as service } from '@ember/service';
 
 export default class CollectionTabsComponent extends Component {
   @service currentStore;
-  @tracked activeTab = 'trending'; // 'trending' or 'special'
+  @tracked activeTab = 'Trending'; // 'Trending' or 'Special'
 
   get activeCollection() {
-    return this.activeTab === 'trending'
+    return this.activeTab === 'Trending'
       ? this.currentStore.trendingSarees
       : this.currentStore.specialCollectionSarees;
   }
